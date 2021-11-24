@@ -1,9 +1,22 @@
+import News from '../components/News'
+import HeroCard from '../components/HeroCard'
 
+export async function getStaticProps() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/photos/1')
+  const news = await res.json()
+  
+  return {
+    props: {
+      news,
+    },
+  }
+}
 
-export default function Home() {
+export default function Home({news}) {
   return (
     <>
-      <h1>Hello Next.js</h1>
+      <HeroCard />
+      <News data={news} />
     </>
   )
 }
