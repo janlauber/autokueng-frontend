@@ -1,4 +1,4 @@
-import { PhoneIcon } from '@heroicons/react/solid'
+import { PhoneIcon, MailIcon } from '@heroicons/react/solid'
 const About = () => {
     return (
         <div className="bg-white">
@@ -28,11 +28,11 @@ const About = () => {
                                 </div>
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                                     <dt className="text-sm font-bold text-gray-700">E-Mail</dt>
-                                    <dd className="font-semibold mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><a href="mailto:info@autokueng.ch">info@autokueng.ch</a></dd>
+                                    <dd className="font-semibold mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><a href="mailto:info@autokueng.ch"className="hover:text-blue-900"><MailIcon className="h-5 w-5 text-blue-500 inline" /> info@autokueng.ch</a></dd>
                                 </div>
                                 <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
                                     <dt className="text-sm font-bold text-gray-700">Telefon</dt>
-                                    <dd className="font-semibold mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><a href="tel:+41319585757"> 031 958 57 57</a></dd>
+                                    <dd className="font-semibold mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><a href="tel:+41319585757" className="hover:text-blue-900"><PhoneIcon className="h-5 w-5 text-blue-500 inline" /> 031 958 57 57</a></dd>
                                 </div>
                             </dl>
                         </div>
