@@ -46,23 +46,21 @@ const services = [
 
 const Services = () => {
     return (
-        <div className="bg-blue-700">
-            <div className="">
-                <h2 className="text-center text-3xl font-extrabold text-white">
-                    UNSERE SERVICES
-                </h2>
-                <div className="text-white flow-root mt-8 lg:mt-10">
-                    <div className="flex flex-wrap">
-                        {services.map((services) => (
-                            <div className="flex-auto text-lg text-center">
-                                <div className="text my-5">
-                                    <FontAwesomeIcon icon={services.icon} className="fa-5x" />
-                                </div>
-                                <h3 className="font-bold" >{services.title}</h3>
-                                <p className="text-gray-300 italic text-sm">{services.description}</p>
+        <div className="bg-blue-500 py-8">
+            <h2 className="text-center text-3xl font-extrabold text-white">
+                UNSERE SERVICES
+            </h2>
+            <div className="text-white flow-root mt-8 lg:mt-10">
+                <div className="grid grid-rows-4 md:grid-rows-2 grid-flow-col gap-4 ">
+                    {services.map((services) => (
+                        <div className="text-lg text-center" key="{service.title}">
+                            <div className="text my-5">
+                                <FontAwesomeIcon icon={services.icon} className="fa-5x" />
                             </div>
-                        ))}
-                    </div>
+                            <h3 className="font-bold" >{services.title}</h3>
+                            <p className="text-gray-300 italic text-sm">{services.description}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
