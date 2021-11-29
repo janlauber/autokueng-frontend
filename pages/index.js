@@ -2,6 +2,7 @@ import News from '../components/News'
 import HeroCard from '../components/HeroCard'
 import About from '../components/About'
 import Services from '../components/Services'
+import Stats from '../components/Stats'
 
 export async function getStaticProps() {
   const res = await fetch('https://jsonplaceholder.typicode.com/photos/1')
@@ -21,6 +22,7 @@ export default function Home({news}) {
       <News data={news} />
       <About />
       <Services />
+      <Stats stats=""/>
     </>
   )
 }

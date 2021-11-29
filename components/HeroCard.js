@@ -20,7 +20,7 @@ function HeroCard({ data }) {
                 <div className="absolute inset-0">
                   <img
                     className="h-full w-full object-cover"
-                    src="/images/background/background.jpg"
+                    src="/images/background/background_old.jpg"
                     alt="Autoküng AG Foto"
                   />
                   <div className="absolute inset-0 bg-blue-300 mix-blend-multiply" />
