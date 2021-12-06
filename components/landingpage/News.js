@@ -2,8 +2,8 @@ import Image from 'next/image'
 
 function News({ data }) {
     return (
-      <div className="py-3 sm:max-w-xl sm:mx-auto">
-        <h1 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+      <div className="py-3 pt-10 sm:max-w-xl sm:mx-auto">
+        <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
             NEWS
         </h1>
         <div className="px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">

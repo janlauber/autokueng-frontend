@@ -1,8 +1,8 @@
-import News from '../components/News'
-import HeroCard from '../components/HeroCard'
-import About from '../components/About'
-import Services from '../components/Services'
-import Stats from '../components/Stats'
+import News from '../components/landingpage/News'
+import HeroCard from '../components/landingpage/HeroCard'
+import About from '../components/landingpage/About'
+import Services from '../components/landingpage/Services'
+import Stats from '../components/landingpage/Stats'
 
 export async function getStaticProps() {
   const res = await fetch('https://jsonplaceholder.typicode.com/photos/1')

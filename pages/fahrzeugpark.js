@@ -3,11 +3,11 @@
 export default function Fahrzeugpark() {
     return (
         <div className="portfolio-contant">
-						<div id="autoscout24">
-							<h2>Autoscout24</h2>
-							<div data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276" className="embedded-content-area"></div>
-							<script src="https://www.autoscout24.ch/MVC/Content/as24-hci-desktop/js/e.min.js"></script>
-						</div>
+			<div id="autoscout24">
+				<h2>Autoscout24</h2>
+				<div data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276" className="embedded-content-area"></div>
+				<script src="https://www.autoscout24.ch/MVC/Content/as24-hci-desktop/js/e.min.js"></script>
+			</div>
 						{/* <div id="autolina">
 							<h2>Autolina</h2>
 							<script src="https://www.autolina.ch/iframe/iframe.js" type="text/javascript"></script>
