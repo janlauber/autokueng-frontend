@@ -3,9 +3,11 @@ import Footer from './Footer'
 
 const name = 'AutoKüng AG'
 const Layout = ({ children }) => (
-    <div className="content">
+    <div className="flex flex-col min-h-screen">
         <Navbar />
-        { children }
+            <div className="flex-1">
+                { children }
+            </div>
         <Footer />
     </div>
     )

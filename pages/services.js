@@ -1,10 +1,15 @@
 import Services from "../components/services/Services"
+import Head from 'next/head'
 
 // get API Data
 export async function getStaticProps() {
   const res = await fetch('https://jsonplaceholder.typicode.com/posts')
   const services = await res.json()
-  
+  if(!services) {
+    return {
+      notFound: true,
+    }
+  }
   return {
     props: {
       services,
@@ -17,6 +22,9 @@ export async function getStaticProps() {
 export default function Fahrzeugpark({services}) {
     return (
       <>
+        <Head>
+          <title>Autokueng - Services</title>
+        </Head>
         <Services services={services} />
       </>
     )
