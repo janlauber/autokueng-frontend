@@ -7,7 +7,12 @@ import Head from 'next/head'
 import Navbar from '../components/Navbar'
 
 export async function getStaticProps() {
-  const res = await fetch('https://jsonplaceholder.typicode.com/photos/1')
+  const res = await fetch('http://localhost:8000/api/v1/news', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
   const news = await res.json()
 
   return {

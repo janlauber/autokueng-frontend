@@ -10,14 +10,14 @@ function News({ data }) {
         <div className="px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
             <div>
-              <img src={data.url} className="h-7 sm:h-8" />
+              <img src={data.picture} className="h-7 sm:h-8" />
             </div>
             <div className="divide-y divide-gray-200">
               <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
                 <h1 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
                     <span className="block text-blue-500">{data.title}</span>
                 </h1>
-                <p>{data.url}</p>
+                <p>{data.content}</p>
               </div>
             </div>
           </div>
