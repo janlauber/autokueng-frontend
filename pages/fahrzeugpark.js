@@ -1,8 +1,11 @@
 import Script from 'next/script'
 import Head from 'next/head'
+import Navbar from '../components/Navbar'
 
 export default function Fahrzeugpark() {
     return (
+		<>
+		<Navbar />
 		<div className="text-center">
 			<Head>
 				<title>Autokueng - Fahrzeugpark</title>
@@ -14,6 +17,7 @@ export default function Fahrzeugpark() {
 			</div>
 			<div data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276" className="embedded-content-area"></div>
 		</div>
+		</>
     )
   }
 

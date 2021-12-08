@@ -1,5 +1,6 @@
 import Services from "../components/services/Services"
 import Head from 'next/head'
+import Navbar from '../components/Navbar'
 
 // get API Data
 export async function getStaticProps() {
@@ -22,6 +23,7 @@ export async function getStaticProps() {
 export default function Fahrzeugpark({services}) {
     return (
       <>
+        <Navbar />
         <Head>
           <title>Autokueng - Services</title>
         </Head>
