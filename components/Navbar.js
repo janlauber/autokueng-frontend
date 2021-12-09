@@ -21,7 +21,7 @@ function Navbar() {
         credentials: 'include',
       })
     } 
-    await router.push('/login')
+    await router.reload()
   }
 
 
