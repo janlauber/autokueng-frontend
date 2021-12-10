@@ -4,14 +4,22 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, LoginIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function Navbar() {
+function Navbar(props) {
+  // const router = useRouter()
+  const [loginStatus, setLoginStatus] = useState("")
+  const [auth, setAuth] = useState()
+  let [showUser, setShowUser] = useState()
+  let [responsiveShowUser, setResponsiveShowUser] = useState()
 
-  const router = useRouter()
+  useEffect(() => {
+    setAuth(props.auth)
+  }, [props.auth])
 
   const changeLoginStatus = async () => {
     if(auth === true) {
@@ -21,87 +29,150 @@ function Navbar() {
         credentials: 'include',
       })
     } 
-    await router.reload()
+    setLoginStatus("Log in")
+    setAuth(false)
+
+    setShowUser(
+      <Link href="/login">
+        <button
+          type="button"
+          className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <LoginIcon className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </Link>
+    )
+
+    Swal.fire({
+      title: 'Logged out',
+      text: 'You have been logged out',
+      icon: 'success',
+      toast: true,
+      position: 'bottom-right',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+    })
   }
-
-
-  const [loginStatus, setLoginStatus] = useState("")
-  const [loginStatusPath, setLoginStatusPath] = useState()
-  const [username, setUsername] = useState("")
-  const [auth, setAuth] = useState(false)
-  let [showUser, setShowUser] = useState()
-  let [responsiveShowUser, setResponsiveShowUser] = useState()
-
   useEffect(() => {
-    (
-      async () => {
-        try {
-          const res = await fetch('http://localhost:8000/api/v1/user', {
-            credentials: 'include',
-            }) 
-          const json = await res.json()
+    
+    if(auth === true) {
+      setLoginStatus(`Log out`)
+      setAuth(true)
+      setShowUser(
+        <div>
+          <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <span className="sr-only">Open user menu</span>
+            <img
+              className="h-8 w-8 rounded-full"
+              src="/images/avatars/admin.png"
+              alt=""
+            />
+          </Menu.Button>
+        </div>
+      )
+      setResponsiveShowUser(
+        <div className="pt-4 flex items-center px-4">
+          <div className="flex-shrink-0">
+            <img
+              className="h-10 w-10 rounded-full ring-blue-500 ring-2"
+              src="/images/avatars/admin.png"
+              alt=""
+            />
+          </div>
+          <div className="ml-3">
+            <div className="text-base font-medium text-gray-800">admin</div>
+          </div>
+        </div>
+      )
+    } else {
+      setLoginStatus("Log in")
+      setAuth(false)
+
+      setShowUser(
+        <Link href="/login">
+          <button
+            type="button"
+            className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <LoginIcon className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </Link>
+      )
+    }
+  }, [auth])
+    
+
+  // useEffect(() => {
+  //   (
+  //     async () => {
+  //       try {
+  //         const res = await fetch('http://localhost:8000/api/v1/user', {
+  //           credentials: 'include',
+  //           }) 
+  //         const json = await res.json()
           
-          if (json.username !== undefined) {
-            setLoginStatus(`Log out`)
-            setUsername(json.username)
-            setAuth(true)
+  //         if (json.username !== undefined) {
+  //           setLoginStatus(`Log out`)
+  //           setAuth(true)
 
-            setShowUser(
-              <div>
-                <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                  <span className="sr-only">Open user menu</span>
-                  <img
-                    className="h-8 w-8 rounded-full"
-                    src="/images/avatars/admin.png"
-                    alt=""
-                  />
-                </Menu.Button>
-              </div>
-            )
+  //           setShowUser(
+  //             <div>
+  //               <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+  //                 <span className="sr-only">Open user menu</span>
+  //                 <img
+  //                   className="h-8 w-8 rounded-full"
+  //                   src="/images/avatars/admin.png"
+  //                   alt=""
+  //                 />
+  //               </Menu.Button>
+  //             </div>
+  //           )
 
-            setResponsiveShowUser(
-              <div className="pt-4 flex items-center px-4">
-                <div className="flex-shrink-0">
-                  <img
-                    className="h-10 w-10 rounded-full ring-blue-500 ring-2"
-                    src="/images/avatars/admin.png"
-                    alt=""
-                  />
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">{json.username}</div>
-                </div>
-              </div>
-            )
+  //           setResponsiveShowUser(
+  //             <div className="pt-4 flex items-center px-4">
+  //               <div className="flex-shrink-0">
+  //                 <img
+  //                   className="h-10 w-10 rounded-full ring-blue-500 ring-2"
+  //                   src="/images/avatars/admin.png"
+  //                   alt=""
+  //                 />
+  //               </div>
+  //               <div className="ml-3">
+  //                 <div className="text-base font-medium text-gray-800">{json.username}</div>
+  //               </div>
+  //             </div>
+  //           )
 
-          } else {
-            setLoginStatus("Log in")
-            setUsername("")
-            setAuth(false)
+  //         } else {
+  //           setLoginStatus("Log in")
+  //           setAuth(false)
 
-            setShowUser(
-              <Link href="/login">
-                <button
-                  type="button"
-                  className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <LoginIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </Link>
-            )
-          }
+  //           setShowUser(
+  //             <Link href="/login">
+  //               <button
+  //                 type="button"
+  //                 className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+  //               >
+  //                 <LoginIcon className="h-5 w-5" aria-hidden="true" />
+  //               </button>
+  //             </Link>
+  //           )
+  //         }
 
           
-        } catch (err) {
-          setLoginStatus("Log in")
-          setAuth(false)
-        }
-      }
-    )()
-  }, [])
+  //       } catch (err) {
+  //         setLoginStatus("Log in")
+  //         setAuth(false)
+  //       }
+  //     }
+  //   )()
+  // }, [])
 
   return (
     <Disclosure as="nav" className="bg-white shadow">
+
+      
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,7 +226,7 @@ function Navbar() {
               </div>
 
 
-              <div className="hidden z-10 sm:ml-6 sm:flex sm:items-center">
+              <div className="hidden z-10 sm:ml-6 sm:my-auto sm:block">
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   {showUser}
@@ -168,12 +239,12 @@ function Navbar() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="cursor-pointer origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            onClick={changeLoginStatus}
+                            onClick={() => { props.updateState(); changeLoginStatus() }}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             {loginStatus}
@@ -256,7 +327,7 @@ function Navbar() {
                   <Disclosure.Button
                     as="a"
                     href="/login"
-                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+                    className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
                   >
                     {loginStatus}
                   </Disclosure.Button>

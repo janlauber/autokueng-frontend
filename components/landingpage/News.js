@@ -5,15 +5,18 @@ import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
 
-function News() {
+function News(props) {
   const [showEdit, setShowEdit] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [picture, setPicture] = useState()
-  const [uploadFinished, setUploadFinished] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null)
-  const router = useRouter();
+  const [auth, setAuth] = useState()
+
+  useEffect(() => {
+    setAuth(props.auth)
+  }, [props.auth])
 
   // toggle edit mode
   function toggle() {
@@ -21,34 +24,42 @@ function News() {
     setShowForm(!showForm)
   }
 
-  // check if the user is logged in
   useEffect(() => {
-    (
-      async () => {
-        try {
-          const res2 = await fetch('http://localhost:8000/api/v1/user', {
-            credentials: 'include',
-            })
-          const login = await res2.json()
+    if (auth === true) {
+      setShowEdit(true)
+    } else {
+      setShowEdit(false)
+    }
+  }, [auth])
 
-          if (login.username !== undefined) {
-            // you are logged in
-            setShowEdit(true)
-          } else {
-            // you are not logged in
-            setNews(
-              <>
-              </>
-            )
-          }
-        } catch (error) {
-        }
-      }
-    )()
-  }, [])
+  // check if the user is logged in
+  // useState(() => {
+  //   (
+  //     async () => {
+  //       try {
+  //         const res2 = await fetch('http://localhost:8000/api/v1/user', {
+  //           credentials: 'include',
+  //           })
+  //         const login = await res2.json()
+
+  //         if (login.username !== undefined) {
+  //           you are logged in
+  //           setShowEdit(true)
+  //         } else {
+  //           you are not logged in
+  //           setNews(
+  //             <>
+  //             </>
+  //           )
+  //         }
+  //       } catch (error) {
+  //       }
+  //     }
+  //   )()
+  // }, [])
 
   // GET API News public Data
-  useEffect(() => {
+  useState(() => {
     (
       async () => {
         try {
@@ -58,14 +69,18 @@ function News() {
           const json = await res.json()
 
           if(!json) {
-            throw new Error('No news found')
+            setTitle('Keine News gefunden')
+            setContent('Leider konnten wir keine News finden')
+            setPicture('')
           }
 
           setTitle(json[0].title)
           setContent(json[0].content)
           setPicture(json[0].picture)
         } catch (error) {
-          throw new Error('No news found')
+          setTitle('Keine News gefunden')
+          setContent('Leider ist ein Fehler aufgetreten')
+          setPicture('')
         }
       }
     )()
@@ -73,29 +88,130 @@ function News() {
 
   // POST API News Data
   const submit = async (e) => {
+
     e.preventDefault();
+    
 
-    // TODO: check status and response code
-    var formdata = new FormData()
-    formdata.append('image', selectedFile)
+    if (selectedFile) {
+      try {
+        // Upload image to data api
 
-    const picture = await fetch('http://localhost:9000/upload', {
-        mode: 'no-cors',
+        var formdata = new FormData()
+        formdata.append('image', selectedFile)
+
+        const options = {
+          method: 'POST',
+          credentials: 'include',
+          body: formdata,
+        }
+
+        const res = await fetch('http://localhost:9000/upload', options)
+        const json = await res.json()
+
+        if (res.status === 201) {
+
+          // upload new image url to database
+
+          const uploadUrl = await fetch('http://localhost:8000/api/v1/news', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(
+                {
+                    "picture": json.data.imageUrl,
+                }
+            )})
+          const uploadJson = await uploadUrl.json()
+
+          if (uploadUrl.status === 201) {
+            Swal.fire({
+              icon: 'success',
+              toast: true,
+              position: 'top-end',
+              title: 'Tip top!',
+              content: 'Bild wurde hochgeladen',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              customClass: {
+                popup: 'bg-blue-500',
+              }
+            })
+          } else {
+            Swal.fire({
+              icon: 'error',
+              toast: true,
+              position: 'top-end',
+              title: 'News konnte nicht hochgeladen werden',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              customClass: {
+                popup: 'bg-red-500',
+              }
+            })
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            title: 'Fehler beim Speichern des Bildes',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            customClass: {
+              popup: 'bg-blue-500',
+            }
+          })
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          title: 'Fehler beim Speichern des Bildes',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          customClass: {
+            popup: 'bg-blue-500',
+          }
+        })
+      }
+    }
+
+    const data = await fetch('http://localhost:8000/api/v1/news', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: formdata,
-    })
-
-    console.log(picture.statusText)
-
-    if (picture.status === 200) {
-      console.log(picture)
-    } else {
+        body: JSON.stringify(
+            {
+                title,
+                content
+            }
+        )})
+    
+    if (data.status === 200) {
+      toggle()
+      Swal.fire({
+        icon: 'success',
+        toast: true,
+        position: 'top-end',
+        title: 'News wurde gespeichert',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+          popup: 'bg-blue-500',
+        }
+      })
+    } else{
       Swal.fire({
         icon: 'error',
         toast: true,
         position: 'top-end',
-        title: 'Fehler beim Speichern des Bildes',
+        title: 'Fehler beim Speichern der News',
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
@@ -104,39 +220,6 @@ function News() {
         }
       })
     }
-
-    // if (uploadFinished === true) {
-    //   data = await fetch('http://localhost:8000/api/v1/news', {
-    //       method: 'POST',
-    //       headers: { 'Content-Type': 'application/json' },
-    //       credentials: 'include',
-    //       body: JSON.stringify(
-    //           {
-    //               title,
-    //               content
-    //           }
-    //       )})
-    //   setUploadFinished(false)
-    // }
-
-
-    //   if (data.status === 200) {
-    //       // router.reload();
-    //   } else {
-    //     Swal.fire({
-    //       icon: 'error',
-    //       toast: true,
-    //       position: 'top-end',
-    //       title: 'Fehler beim Speichern',
-    //       showConfirmButton: false,
-    //       timer: 3000,
-    //       timerProgressBar: true,
-    //       customClass: {
-    //         popup: 'bg-blue-500',
-    //       }
-    //     })
-
-    //   }
   }
   return (
     <div className="py-3 pt-10 sm:max-w-xl sm:mx-auto">
@@ -151,7 +234,8 @@ function News() {
               }}
           >
             <div>
-              <img src={picture} className="h-7 sm:h-8" />
+              <img src={picture} className="" />
+              {picture}
             </div>
             <div className="divide-y divide-gray-200">
               <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">

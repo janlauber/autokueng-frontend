@@ -7,15 +7,18 @@ import Head from 'next/head'
 import Navbar from '../components/Navbar'
 import { Fragment, useEffect, useState } from 'react'
 
-export default function Home() {
+export default function Home(props) {
+
+  console.log(props.auth)
   return (
     <>
-      <Navbar />
       <Head>
         <title>Autokueng</title>
       </Head>
       <HeroCard />
-      <News />
+      <News
+        auth={props.auth}  
+      />
       <About />
       <Services />
       <Stats stats=""/>

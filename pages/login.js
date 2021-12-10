@@ -2,12 +2,10 @@ import { useRouter } from 'next/router'
 import { useState } from 'react';
 import Navbar from '../components/Navbar'
 
-const Login = () => {
+const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
-
-
     const submit = async (e) => {
         e.preventDefault();
         
@@ -23,7 +21,8 @@ const Login = () => {
             )})
 
         if (data.status === 200) {
-            router.push('/');
+            props.updateState()
+            router.push('/')
         } else {
             alert('Invalid credentials');
         }
@@ -31,7 +30,6 @@ const Login = () => {
 
     return (
         <>
-        <Navbar />
         <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <img
