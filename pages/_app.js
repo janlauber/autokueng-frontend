@@ -2,7 +2,8 @@ import 'tailwindcss/tailwind.css'
 import Layout from '../components/Layout'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Navbar from '../components/Navbar'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
+
 
 function MyApp({ Component, pageProps }) {
   const [auth, setAuth] = useState()
@@ -19,9 +20,8 @@ function MyApp({ Component, pageProps }) {
             const res = await fetch('http://localhost:8000/api/v1/user', {
               credentials: 'include',
               }) 
-            const json = await res.json()
-            
-            if (json.username !== undefined) {
+            const json = await res.json()            
+            if (json.name !== undefined) {
               setAuth(true)
             } else {
               setAuth(false)

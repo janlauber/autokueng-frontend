@@ -8,8 +8,6 @@ import Navbar from '../components/Navbar'
 import { Fragment, useEffect, useState } from 'react'
 
 export default function Home(props) {
-
-  console.log(props.auth)
   return (
     <>
       <Head>

@@ -32,32 +32,6 @@ function News(props) {
     }
   }, [auth])
 
-  // check if the user is logged in
-  // useState(() => {
-  //   (
-  //     async () => {
-  //       try {
-  //         const res2 = await fetch('http://localhost:8000/api/v1/user', {
-  //           credentials: 'include',
-  //           })
-  //         const login = await res2.json()
-
-  //         if (login.username !== undefined) {
-  //           you are logged in
-  //           setShowEdit(true)
-  //         } else {
-  //           you are not logged in
-  //           setNews(
-  //             <>
-  //             </>
-  //           )
-  //         }
-  //       } catch (error) {
-  //       }
-  //     }
-  //   )()
-  // }, [])
-
   // GET API News public Data
   useState(() => {
     (
@@ -90,6 +64,8 @@ function News(props) {
   const submit = async (e) => {
 
     e.preventDefault();
+
+    const error = 0
     
 
     if (selectedFile) {
@@ -109,8 +85,8 @@ function News(props) {
         const json = await res.json()
 
         if (res.status === 201) {
-
           // upload new image url to database
+          setPicture(json.data.imageUrl)
 
           const uploadUrl = await fetch('http://localhost:8000/api/v1/news', {
             method: 'POST',
@@ -123,81 +99,81 @@ function News(props) {
             )})
           const uploadJson = await uploadUrl.json()
 
-          if (uploadUrl.status === 201) {
-            Swal.fire({
-              icon: 'success',
-              toast: true,
-              position: 'top-end',
-              title: 'Tip top!',
-              content: 'Bild wurde hochgeladen',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              customClass: {
-                popup: 'bg-blue-500',
-              }
-            })
+          if (uploadUrl.status === 200) {
+            error = 2
           } else {
-            Swal.fire({
-              icon: 'error',
-              toast: true,
-              position: 'top-end',
-              title: 'News konnte nicht hochgeladen werden',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              customClass: {
-                popup: 'bg-red-500',
-              }
-            })
+            error = 1
           }
         } else {
-          Swal.fire({
-            icon: 'error',
-            toast: true,
-            position: 'top-end',
-            title: 'Fehler beim Speichern des Bildes',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            customClass: {
-              popup: 'bg-blue-500',
-            }
-          })
+          error = 1
         }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          toast: true,
-          position: 'top-end',
-          title: 'Fehler beim Speichern des Bildes',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          customClass: {
-            popup: 'bg-blue-500',
-          }
-        })
+      } catch (err) {
+        error = 1
       }
     }
 
-    const data = await fetch('http://localhost:8000/api/v1/news', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(
-            {
-                title,
-                content
-            }
-        )})
+    // POST new News to database api
+    try {
+      const data = await fetch('http://localhost:8000/api/v1/news', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(
+              {
+                  title,
+                  content
+              }
+          )})
+        
+      if (data.status === 200) {
+        if (error !== 1){
+          error = 2
+        }
+      } else{
+        error = 0
+      }
+    } catch (err) {
+      if (error !== 1){
+        error = 2
+      }
+    }
     
-    if (data.status === 200) {
+
+
+    if(error === 0) {
+      Swal.fire({
+        icon: 'error',
+        toast: true,
+        position: 'top',
+        title: 'Fehler beim Speichern',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+          popup: 'bg-blue-500',
+        }
+      })
+    } else if (error === 1) {
+      toggle()
+      Swal.fire({
+        icon: 'warning',
+        toast: true,
+        position: 'top',
+        title: 'Fehler beim Speichern',
+        text: 'Bild wurde nicht hochgeladen',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        customClass: {
+          popup: 'bg-blue-500',
+        }
+      })
+    } else if (error === 2) {
       toggle()
       Swal.fire({
         icon: 'success',
         toast: true,
-        position: 'top-end',
+        position: 'top',
         title: 'News wurde gespeichert',
         showConfirmButton: false,
         timer: 3000,
@@ -206,20 +182,14 @@ function News(props) {
           popup: 'bg-blue-500',
         }
       })
-    } else{
-      Swal.fire({
-        icon: 'error',
-        toast: true,
-        position: 'top-end',
-        title: 'Fehler beim Speichern der News',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        customClass: {
-          popup: 'bg-blue-500',
-        }
-      })
     }
+      
+
+
+
+    
+
+
   }
   return (
     <div className="py-3 pt-10 sm:max-w-xl sm:mx-auto">
@@ -235,7 +205,6 @@ function News(props) {
           >
             <div>
               <img src={picture} className="" />
-              {picture}
             </div>
             <div className="divide-y divide-gray-200">
               <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">

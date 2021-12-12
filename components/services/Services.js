@@ -40,7 +40,6 @@ function Services({ services }) {
             </div>
         )
     } catch (error) {
-        console.log("No Services found")
         return (
             <div className="">
                 {heading}

@@ -23,7 +23,6 @@ export async function getStaticProps() {
 export default function Fahrzeugpark({services}) {
     return (
       <>
-        <Navbar />
         <Head>
           <title>Autokueng - Services</title>
         </Head>

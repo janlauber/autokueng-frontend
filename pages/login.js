@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 import Navbar from '../components/Navbar'
 
 const Login = (props) => {
@@ -9,22 +10,44 @@ const Login = (props) => {
     const submit = async (e) => {
         e.preventDefault();
         
-        const data = await fetch('http://localhost:8000/api/v1/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(
-                {
-                    username,
-                    password
-                }
-            )})
+        try {
+            const data = await fetch('http://localhost:8000/api/v1/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify(
+                    {
+                        username,
+                        password
+                    }
+                )})
 
-        if (data.status === 200) {
-            props.updateState()
-            router.push('/')
-        } else {
-            alert('Invalid credentials');
+            if (data.status === 200) {
+                props.updateState()
+                router.push('/')
+            } else {
+                Swal.fire({
+                    title: 'Fehler',
+                    text: 'Benutzername oder Passwort falsch',
+                    icon: 'error',
+                    toast: true,
+                    position: 'top',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                  })
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Fehler',
+                text: 'Es ist ein Fehler aufgetreten',
+                icon: 'error',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+              })
         }
     }
 

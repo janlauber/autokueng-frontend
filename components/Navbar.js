@@ -20,39 +20,53 @@ function Navbar(props) {
   useEffect(() => {
     setAuth(props.auth)
   }, [props.auth])
-
+  
   const changeLoginStatus = async () => {
-    if(auth === true) {
-      await fetch('http://localhost:8000/api/v1/logout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+
+    try {
+      if(auth === true) {
+        await fetch('http://localhost:8000/api/v1/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        })
+      } 
+      setLoginStatus("Log in")
+      setAuth(false)
+
+      setShowUser(
+        <Link href="/login">
+          <button
+            type="button"
+            className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <LoginIcon className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </Link>
+      )
+
+      Swal.fire({
+        title: 'Ausgeloggt',
+        text: 'Du wurdest erfolgreich abgemeldet',
+        icon: 'success',
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
       })
-    } 
-    setLoginStatus("Log in")
-    setAuth(false)
-
-    setShowUser(
-      <Link href="/login">
-        <button
-          type="button"
-          className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <LoginIcon className="h-5 w-5" aria-hidden="true" />
-        </button>
-      </Link>
-    )
-
-    Swal.fire({
-      title: 'Logged out',
-      text: 'You have been logged out',
-      icon: 'success',
-      toast: true,
-      position: 'bottom-right',
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-    })
+    } catch (error) {
+      Swal.fire({
+        title: 'Fehler',
+        text: 'Es ist ein Fehler aufgetreten',
+        icon: 'error',
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+      })
+    }
   }
   useEffect(() => {
     
@@ -101,73 +115,6 @@ function Navbar(props) {
       )
     }
   }, [auth])
-    
-
-  // useEffect(() => {
-  //   (
-  //     async () => {
-  //       try {
-  //         const res = await fetch('http://localhost:8000/api/v1/user', {
-  //           credentials: 'include',
-  //           }) 
-  //         const json = await res.json()
-          
-  //         if (json.username !== undefined) {
-  //           setLoginStatus(`Log out`)
-  //           setAuth(true)
-
-  //           setShowUser(
-  //             <div>
-  //               <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-  //                 <span className="sr-only">Open user menu</span>
-  //                 <img
-  //                   className="h-8 w-8 rounded-full"
-  //                   src="/images/avatars/admin.png"
-  //                   alt=""
-  //                 />
-  //               </Menu.Button>
-  //             </div>
-  //           )
-
-  //           setResponsiveShowUser(
-  //             <div className="pt-4 flex items-center px-4">
-  //               <div className="flex-shrink-0">
-  //                 <img
-  //                   className="h-10 w-10 rounded-full ring-blue-500 ring-2"
-  //                   src="/images/avatars/admin.png"
-  //                   alt=""
-  //                 />
-  //               </div>
-  //               <div className="ml-3">
-  //                 <div className="text-base font-medium text-gray-800">{json.username}</div>
-  //               </div>
-  //             </div>
-  //           )
-
-  //         } else {
-  //           setLoginStatus("Log in")
-  //           setAuth(false)
-
-  //           setShowUser(
-  //             <Link href="/login">
-  //               <button
-  //                 type="button"
-  //                 className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-  //               >
-  //                 <LoginIcon className="h-5 w-5" aria-hidden="true" />
-  //               </button>
-  //             </Link>
-  //           )
-  //         }
-
-          
-  //       } catch (err) {
-  //         setLoginStatus("Log in")
-  //         setAuth(false)
-  //       }
-  //     }
-  //   )()
-  // }, [])
 
   return (
     <Disclosure as="nav" className="bg-white shadow">
