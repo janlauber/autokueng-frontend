@@ -95,7 +95,7 @@ function Navbar(props) {
             />
           </div>
           <div className="ml-3">
-            <div className="text-base font-medium text-gray-800">admin</div>
+            <div className="text-base font-medium text-gray-800">{props.user}</div>
           </div>
         </div>
       )
