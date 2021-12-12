@@ -1,25 +1,22 @@
-import News from '../components/News'
-import HeroCard from '../components/HeroCard'
-import About from '../components/About'
-import Services from '../components/Services'
-import Stats from '../components/Stats'
+import News from '../components/landingpage/News'
+import HeroCard from '../components/landingpage/HeroCard'
+import About from '../components/landingpage/About'
+import Services from '../components/landingpage/Services'
+import Stats from '../components/landingpage/Stats'
+import Head from 'next/head'
+import Navbar from '../components/Navbar'
+import { Fragment, useEffect, useState } from 'react'
 
-export async function getStaticProps() {
-  const res = await fetch('https://jsonplaceholder.typicode.com/photos/1')
-  const news = await res.json()
-  
-  return {
-    props: {
-      news,
-    },
-  }
-}
-
-export default function Home({news}) {
+export default function Home(props) {
   return (
     <>
+      <Head>
+        <title>Autokueng</title>
+      </Head>
       <HeroCard />
-      <News data={news} />
+      <News
+        auth={props.auth}  
+      />
       <About />
       <Services />
       <Stats stats=""/>
