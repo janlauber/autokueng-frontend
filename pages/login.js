@@ -1,55 +1,45 @@
-import { useRouter } from 'next/router'
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react/cjs/react.production.min';
 import Swal from 'sweetalert2';
-import Navbar from '../components/Navbar'
+import { useAuth } from '../contexts/auth';
 
-const Login = (props) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+export default function Login() {
+    const authenticate = useAuth();
     const router = useRouter();
-    const submit = async (e) => {
-        e.preventDefault();
-        
-        try {
-            const data = await fetch('http://localhost:8000/api/v1/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify(
-                    {
-                        username,
-                        password
-                    }
-                )})
+    const submit = async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const username = data.get('username');
+        const password = data.get('password');
 
-            if (data.status === 200) {
-                props.updateState()
-                router.push('/')
-            } else {
-                Swal.fire({
-                    title: 'Fehler',
-                    text: 'Benutzername oder Passwort falsch',
-                    icon: 'error',
-                    toast: true,
-                    position: 'top',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                  })
-            }
+        try {
+            await authenticate.login(username, password);
+            router.push('/');
         } catch (error) {
             Swal.fire({
                 title: 'Fehler',
-                text: 'Es ist ein Fehler aufgetreten',
+                text: "Benutzername oder Passwort falsch",
                 icon: 'error',
                 toast: true,
-                position: 'top',
+                position: 'top-start',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,
-              })
+            });
+
+            // color red for the input field
+            const usernameInput = document.getElementById('username');
+            usernameInput.style.borderColor = 'red';
+
+            const passwordInput = document.getElementById('password');
+            passwordInput.style.borderColor = 'red';
         }
     }
+
+    if (authenticate.user) {
+        router.push('/');
+    }
+
 
     return (
         <>
@@ -81,7 +71,6 @@ const Login = (props) => {
                                 name="username"
                                 id="username"
                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-600 sm:text-sm"
-                                onChange={(e) => setUsername(e.target.value)}
                                 required
                                 />
                             </div>
@@ -96,7 +85,6 @@ const Login = (props) => {
                                 name="password"
                                 id="password"
                                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-600 sm:text-sm"
-                                onChange={(e) => setPassword(e.target.value)}
                                 required
                                 />
                             </div>
@@ -116,5 +104,3 @@ const Login = (props) => {
         </>
     )
 }
-
-export default Login;

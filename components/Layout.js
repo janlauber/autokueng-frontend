@@ -9,12 +9,8 @@ export default function Layout(props) {
     return (
         
         <div className="flex flex-col min-h-screen">
-            <Navbar 
-                updateState={props.updateState}
-                auth={props.auth}
-                user={props.user}
-            />
-                {React.cloneElement(props.children, { auth: props.auth, updateState: props.updateState })}
+            <Navbar/>
+                {React.cloneElement(props.children, { name })}
             <Footer />
         </div>
     )

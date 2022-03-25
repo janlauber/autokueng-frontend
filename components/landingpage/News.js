@@ -3,20 +3,28 @@ import { useEffect, useState } from 'react'
 import { ClockIcon, PaperClipIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import { useAuth } from '../../contexts/auth';
+import Api from "../../config/api";
+import DataApi from '../../config/data-api'
+import Cookies from 'js-cookie'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-
-function News(props) {
+function News() {
+  const authenticate = useAuth()
   const [showEdit, setShowEdit] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [picture, setPicture] = useState()
   const [selectedFile, setSelectedFile] = useState(null)
-  const [auth, setAuth] = useState()
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    setAuth(props.auth)
-  }, [props.auth])
+  const token = Cookies.get('token');
+  if (token) {
+    Api.defaults.headers.Authorization = 'Bearer ' + token;
+    DataApi.defaults.headers.Authorization = 'Bearer ' + token;
+  }
 
   // toggle edit mode
   function toggle() {
@@ -25,49 +33,45 @@ function News(props) {
   }
 
   useEffect(() => {
-    if (auth === true) {
+    if (authenticate.user) {
       setShowEdit(true)
     } else {
       setShowEdit(false)
+      setShowForm(false)
     }
-  }, [auth])
+  })
 
   // GET API News public Data
-  useState(() => {
+  useEffect(() => {
     (
       async () => {
-        try {
-          const res = await fetch('http://localhost:8000/api/v1/news', {
-            credentials: 'include',
-            })
-          const json = await res.json()
-
-          if(!json) {
-            setTitle('Keine News gefunden')
-            setContent('Leider konnten wir keine News finden')
-            setPicture('')
+        while(loading) {
+          try {
+            const { data: news} = await Api.get('/api/v1/news');
+            if (news) {
+              setTitle(news[0].title)
+              setContent(news[0].content)
+              setPicture(news[0].picture)
+            }
+            setLoading(false)
+          } catch (error) {
+            console.log(error);
           }
-
-          setTitle(json[0].title)
-          setContent(json[0].content)
-          setPicture(json[0].picture)
-        } catch (error) {
-          setTitle('Keine News gefunden')
-          setContent('Leider ist ein Fehler aufgetreten')
-          setPicture('')
+          // Timeout
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
       }
     )()
   }, [])
+    
 
   // POST API News Data
   const submit = async (e) => {
-
     e.preventDefault();
+    const formsubdata = new FormData(event.currentTarget);
 
     const error = 0
     
-
     if (selectedFile) {
       try {
         // Upload image to data api
@@ -75,34 +79,26 @@ function News(props) {
         var formdata = new FormData()
         formdata.append('image', selectedFile)
 
-        const options = {
-          method: 'POST',
-          credentials: 'include',
-          body: formdata,
-        }
+        const { data: newsPictureUpload } = await DataApi.post('/upload', formdata, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
 
-        const res = await fetch('http://localhost:9000/upload', options)
-        const json = await res.json()
-
-        if (res.status === 201) {
+        if (newsPictureUpload) {
           // upload new image url to database
-          setPicture(json.data.imageUrl)
+          setPicture(newsPictureUpload.data.imageUrl)
 
-          const uploadUrl = await fetch('http://localhost:8000/api/v1/news', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(
-                {
-                    "picture": json.data.imageUrl,
-                }
-            )})
-          const uploadJson = await uploadUrl.json()
-
-          if (uploadUrl.status === 200) {
-            error = 2
-          } else {
-            error = 1
+          // upload new news to database
+          try {
+            const { data: newsPicture} = await Api.put('/api/v1/news', {
+              "picture": newsPictureUpload.data.imageUrl,
+            });
+            if (newsPicture) {
+              setPicture(newsPicture.picture)
+            }
+          } catch (error) {
+            console.log(error)
           }
         } else {
           error = 1
@@ -112,92 +108,73 @@ function News(props) {
       }
     }
 
-    // POST new News to database api
     try {
-      const data = await fetch('http://localhost:8000/api/v1/news', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify(
-              {
-                  title,
-                  content
-              }
-          )})
-        
-      if (data.status === 200) {
-        if (error !== 1){
-          error = 2
-        }
-      } else{
-        error = 0
-      }
-    } catch (err) {
-      if (error !== 1){
-        error = 2
-      }
+      console.log(formsubdata.get('title'))
+      const { data: newsText } = await Api.put('/api/v1/news', {
+        "title": title,
+        "content": content,
+      });
+      if (newsText) {
+        setTitle(newsText.title)
+        setContent(newsText.content)
+        setPicture(newsText.picture)
+      } 
+    } catch (error) {
+      error = 2
     }
-    
 
-
-    if(error === 0) {
+    if (error === 0) {
       Swal.fire({
-        icon: 'error',
-        toast: true,
-        position: 'top',
-        title: 'Fehler beim Speichern',
+        title: 'Erfolgreich gespeichert',
+        icon: 'success',
         showConfirmButton: false,
-        timer: 3000,
+        toast: true,
+        position: 'top-start',
+        timer: 2500,
         timerProgressBar: true,
-        customClass: {
-          popup: 'bg-blue-500',
-        }
       })
     } else if (error === 1) {
-      toggle()
       Swal.fire({
-        icon: 'warning',
-        toast: true,
-        position: 'top',
-        title: 'Fehler beim Speichern',
-        text: 'Bild wurde nicht hochgeladen',
+        title: 'Fehler beim Hochladen',
+        text: 'Bild konnte nicht hochgeladen werden',
+        icon: 'error',
         showConfirmButton: false,
-        timer: 3000,
+        toast: true,
+        position: 'top-start',
+        timer: 2500,
         timerProgressBar: true,
-        customClass: {
-          popup: 'bg-blue-500',
-        }
       })
     } else if (error === 2) {
-      toggle()
       Swal.fire({
-        icon: 'success',
-        toast: true,
-        position: 'top',
-        title: 'News wurde gespeichert',
+        title: 'Fehler beim Speichern',
+        text: 'News Text konnte nicht gespeichert werden',
+        icon: 'error',
         showConfirmButton: false,
-        timer: 3000,
+        toast: true,
+        position: 'top-start',
+        timer: 2500,
         timerProgressBar: true,
-        customClass: {
-          popup: 'bg-blue-500',
-        }
       })
     }
-      
 
-
-
-    
-
-
+    setShowForm(false)
   }
+    
   return (
     <div className="py-3 pt-10 sm:max-w-xl sm:mx-auto">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
           NEWS
       </h1>
+      
       <div className="px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-14 sm:pb-10">
         <div className="max-w-md mx-auto">
+
+          {loading ?
+          <div>
+            <Skeleton height={100} width={200} count={1} />
+            <Skeleton height={40} width={200} count={2} />
+          </div>
+          :
           <div
             style={{
               display: showForm ? "none" : "block"
@@ -215,6 +192,7 @@ function News(props) {
               </div>
             </div>
           </div>
+          }
 
           <div style={{
             display: showForm ? "block" : "none"
