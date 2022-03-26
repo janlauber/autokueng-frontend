@@ -1,11 +1,12 @@
 import { SpeakerphoneIcon, XIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
-
-
-
+import Api from "../../config/api"
+import { useAuth } from "../../contexts/auth"
+import ServiceCard from './ServiceCard'
 
 function Service({ services }) {
-    const [show, setShow] = useState(false);
+    const authenticated = useAuth()
+    const [show, setShow] = useState(false)
     function closeAlert() {
         setShow(!show);
     }
@@ -15,29 +16,57 @@ function Service({ services }) {
             <h2 className="text-xl text-blue-600 font-semibold">Unsere Dienstleistungen im Überblick</h2>
         </div>     
     )
-    try {
-        return (
-            <div className="">
-                {heading}
-                <div className="grid sm:grid-cols-3 gap-4">
-                
-                    {services.map((service) => (
-                        
-                        <div className="text-lg text-center p-8" key={service.id}>
-                            <div className="">
-                                <img src="https://via.placeholder.com/600/92c952" />
-                            </div>
-                            <h2 className="font-bold text-4xl">{service.title}</h2>
-                            <p className="text-gray-800 italic text-sm">{service.body}</p>
-                        </div>
-                    ))}
-                
 
+    try {
+        if (authenticated.user) {
+            return (
+                <div className="">
+                    {heading}
+                    
+                    <div className="grid sm:grid-cols-3 gap-4">
+                    
+                        {services.map((service) => (
+                            <div className="flex p-3 items-center justify-center bg-white" key={service.ID}>
+
+                                
+                                <ServiceCard service={service} />
+                                
+                          
+                            </div>
+
+                        ))}
+                        
+                    </div>
                 </div>
-                
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div className="">
+                    {heading}
+                    <div className="grid sm:grid-cols-3 gap-4">
+                    
+                        {services.map((service) => (
+                            <div className="flex p-3 items-center justify-center bg-white" key={service.ID}>
+
+                                <div className="w-80 rounded-2xl border shadow py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100">
+                            
+                                    <p className="text-3xl text-gray-700 font-semibold"> {service.title} </p>
+                                    <p className="text-sm text-gray-700 font-light mt-2 leading-7"> {service.content} </p>
+                                    <div className="">
+                                        <img src={service.picture} />
+                                    </div>
+                            
+                                </div>
+                          
+                            </div>
+                        ))}
+                    
+                    </div>
+                </div>
+            )
+        }
     } catch (error) {
+        // incase of error
         return (
             <div className="">
                 {heading}

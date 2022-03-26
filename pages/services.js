@@ -9,6 +9,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 function Services() {
   const authenticate = useAuth();
   const [loading, setLoading] = useState(true)
+  const [services, setServices] = useState([])
 
   if (authenticate.user) {
 
@@ -23,9 +24,9 @@ function Services() {
           try {
             const { data: services} = await Api.get('/api/v1/services');
             if (services) {
-              console.log(services)
+              setLoading(false)
+              setServices(services)
             }
-            setLoading(false)
           } catch (error) {
             console.log(error);
           }
@@ -59,7 +60,7 @@ function Services() {
             </div>
           </div>
           :
-          <Service/>
+          <Service services={services} />
         }
       
     </>
