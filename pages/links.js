@@ -1,6 +1,4 @@
-import Navbar from '../components/Navbar'
-
-export default function Fahrzeugpark() {
+export default function Links() {
     return (
       <>
         <h1>Hello Links.js</h1>

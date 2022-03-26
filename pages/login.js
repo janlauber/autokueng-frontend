@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react/cjs/react.production.min';
 import Swal from 'sweetalert2';
 import { useAuth } from '../contexts/auth';
 

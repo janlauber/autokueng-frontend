@@ -1,12 +1,10 @@
-import Image from 'next/image'
 import { SpeakerphoneIcon, XIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
-import { Popover, Transition } from '@headlessui/react'
 
 
 
 
-function Services({ services }) {
+function Service({ services }) {
     const [show, setShow] = useState(false);
     function closeAlert() {
         setShow(!show);
@@ -21,7 +19,7 @@ function Services({ services }) {
         return (
             <div className="">
                 {heading}
-                <div className="grid sm:grid-cols-3 gap-4 ">
+                <div className="grid sm:grid-cols-3 gap-4">
                 
                     {services.map((service) => (
                         
@@ -47,7 +45,7 @@ function Services({ services }) {
                         style={{
                             display: show ? "none" : "block"
                           }}
-                        className="fixed inset-x-0 pb-2 sm:pb-5"
+                        className="block inset-x-0 pb-2 sm:pb-5"
                     >
                         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                             <div className="p-2 rounded-lg bg-red-400 shadow-lg sm:p-3">
@@ -82,4 +80,4 @@ function Services({ services }) {
     }
 }
 
-export default Services
+export default Service

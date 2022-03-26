@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { ClockIcon, PaperClipIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
+import { ClockIcon, LinkIcon, PaperClipIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 import { useAuth } from '../../contexts/auth';
@@ -17,7 +17,6 @@ function News() {
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
   const [picture, setPicture] = useState()
-  const [selectedFile, setSelectedFile] = useState(null)
   const [loading, setLoading] = useState(true)
 
   const token = Cookies.get('token');
@@ -68,16 +67,13 @@ function News() {
   // POST API News Data
   const submit = async (e) => {
     e.preventDefault();
-    const formsubdata = new FormData(event.currentTarget);
 
     const error = 0
     
-    if (selectedFile) {
+    if (document.querySelector('#image').files[0]) {
       try {
-        // Upload image to data api
-
         var formdata = new FormData()
-        formdata.append('image', selectedFile)
+        formdata.append('image', document.querySelector('#image').files[0])
 
         const { data: newsPictureUpload } = await DataApi.post('/upload', formdata, {
           headers: {
@@ -97,8 +93,10 @@ function News() {
             if (newsPicture) {
               setPicture(newsPicture.picture)
             }
-          } catch (error) {
-            console.log(error)
+            // clear form
+            document.querySelector('#image').value = ''
+          } catch (err) {
+            console.log(err)
           }
         } else {
           error = 1
@@ -109,17 +107,17 @@ function News() {
     }
 
     try {
-      console.log(formsubdata.get('title'))
       const { data: newsText } = await Api.put('/api/v1/news', {
-        "title": title,
-        "content": content,
+        "title": document.querySelector('#title').value,
+        "content": document.querySelector('#content').value,
       });
       if (newsText) {
         setTitle(newsText.title)
         setContent(newsText.content)
         setPicture(newsText.picture)
       } 
-    } catch (error) {
+    } catch (err) {
+      console.log(err)
       error = 2
     }
 
@@ -214,7 +212,6 @@ function News() {
                     id="title"
                     className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     defaultValue={title}
-                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
               </div>
@@ -230,22 +227,28 @@ function News() {
                     id="content"
                     className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                     defaultValue={content}
-                    onChange={(e) => {
-                      setContent(e.target.value)
-                    }}
                   />
                 </div>
               </div>
 
               {/* Picture input */}
               <div className="mt-5">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                  Bild
+                </label>
                 <input
                   type="file"
                   name="image"
                   id="image"
-                  onChange={(e) => setSelectedFile(e.target.files[0])}
-                  className=""
+                  // onChange={(e) => setSelectedFile(e.target.files[0])}
+                  className="de"
                 />
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mt-8">
+                  Aktuelles Bild <LinkIcon className="-ml-0.5 mr-2 h-4 w-4 inline" aria-hidden="true" />
+                </label>
+                <a href={picture} target="_blank" rel="noopener noreferrer" className="underline decoration-sky-500">
+                  {picture}
+                </a>
                   {/* <PaperClipIcon className="h-5 w-5" aria-hidden="true" />
                   <span className="sr-only">Attach a file</span> */}
               </div>

@@ -1,7 +1,5 @@
+const Stats = () => {
 
-
-
-const Stats = ({ stats }) => {
     return(
         <div className="bg-gray-100 pt-12 sm:pt-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,7 +19,7 @@ const Stats = ({ stats }) => {
                         <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">
                             <div className="flex flex-col border-b border-gray-100 p-6 text-center sm:border-0 sm:border-r">
                             <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">Mitarbeitende</dt>
-                            <dd className="order-1 text-5xl font-extrabold text-blue-500">11</dd>
+                            <dd id="members" className="order-1 text-5xl font-extrabold text-blue-500">11</dd>
                             </div>
                             <div className="flex flex-col border-t border-b border-gray-100 p-6 text-center sm:border-0 sm:border-l sm:border-r">
                             <dt className="order-2 mt-2 text-lg leading-6 font-medium text-gray-500">Geöffnet</dt>
