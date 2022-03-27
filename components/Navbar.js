@@ -77,48 +77,52 @@ function Navbar(props) {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
+                    <Link href="/">
                       <img
-                        className="block lg:hidden h-8 w-auto"
+                        className="block lg:hidden h-8 w-auto cursor-pointer"
                         src="/images/logo/logo_text_colored_primary.svg"
                         alt="Workflow"
                       />
+                    </Link>
+                    <Link href="/">
                       <img
-                        className="hidden lg:block h-8 w-auto"
+                        className="hidden lg:block h-8 w-auto cursor-pointer"
                         src="/images/logo/logo_text_colored_primary.svg"
                         alt="Workflow"
                       />
+                    </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-blue-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link href="/">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Home
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/fahrzeugpark">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Fahrzeugpark
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/services">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Services
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/firma">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Firma
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/links">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Links
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/kontakt">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Kontakt
-                    </a>
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -219,7 +223,8 @@ function Navbar(props) {
             <div className="pt-0 pb-3 border-t border-gray-200">
               {responsiveShowUser}
               <div className="mt-3 space-y-1">
-                <a 
+                <span
+                  className='cursor-pointer'
                   onClick={changeLoginStatus}
                 >
                   <Disclosure.Button
@@ -228,7 +233,7 @@ function Navbar(props) {
                   >
                     {loginStatus}
                   </Disclosure.Button>
-                </a>
+                </span>
               </div>
             </div>
 

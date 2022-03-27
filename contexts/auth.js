@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
             if (token) {
                 try {
                     Api.defaults.headers.Authorization = 'Bearer ' + token;
-                    const { data: user} = await Api.get('/api/v1/auth');
+                    const { data: user} = await Api.get('/auth');
                     if (user) {
                         setUser(user);
                     }
@@ -34,14 +34,14 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (username, password) => {
-        const { data: data } = await Api.post('/api/v1/auth', {
+        const { data: data } = await Api.post('/auth', {
             username,
             password,
         });
         if (data) {
             console.log("Got token from login: " + data["token"]);
             Api.defaults.headers.Authorization = 'Bearer ' + data["token"];
-            const { data: user} = await Api.get('/api/v1/auth');
+            const { data: user} = await Api.get('/auth');
             if (user) {
                 setUser(user);
                 console.log("Logged in as " + user.username);

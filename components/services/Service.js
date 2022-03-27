@@ -1,41 +1,174 @@
-import { SpeakerphoneIcon, XIcon } from '@heroicons/react/solid'
+import { SpeakerphoneIcon, ViewGridAddIcon, XIcon, PhotographIcon, SaveIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
-import Api from "../../config/api"
 import { useAuth } from "../../contexts/auth"
 import ServiceCard from './ServiceCard'
 
 function Service({ services }) {
     const authenticated = useAuth()
     const [show, setShow] = useState(false)
+    const [showServiceForm, setShowServiceForm] = useState(false)
     function closeAlert() {
         setShow(!show);
     }
+
+    function toggle() {
+        setShowServiceForm(!showServiceForm);
+        // reset form
+        document.getElementById("service-form").reset();
+        document.getElementById("image-preview").src = "";
+        document.getElementById("image-preview").style.display = "none";
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+
     let heading = (
         <div className="my-6 text-center">
             <h1 className="my-2 font-bold text-4xl">SERVICES</h1>
-            <h2 className="text-xl text-blue-600 font-semibold">Unsere Dienstleistungen im Überblick</h2>
-        </div>     
+            <h2 className="text-xl text-blue-500 font-semibold">Unsere Dienstleistungen im Überblick</h2>
+        </div>
+    )
+
+    let addButton = (
+        <div
+            className="justify-self-center"
+            style={{
+                display: showServiceForm ? "none" : "block"
+            }}
+        >
+            <button
+                onClick={toggle}
+                type="button"
+                className="float-left shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+                <ViewGridAddIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                Service hinzufügen
+            </button>
+        </div>
+    )
+
+    let serviceForm = (
+        <div
+            style={{
+                display: showServiceForm ? "block" : "none"
+            }}
+            className="flex p-3 bg-gray-50"
+        >
+            <div className="py-2 px-8">
+                <h2 className="text-xl text-blue-500 font-semibold">Service hinzufügen</h2>
+
+                <form id="service-form">
+                    {/* Title input */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                            Titel
+                        </label>
+                        <div className="mt-1">
+                            <input
+                                type="text"
+                                name="title"
+                                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+
+                            />
+                        </div>
+                    </div>
+                    {/* Content input */}
+                    <div className="mt-5">
+                        <label className="block text-sm font-medium text-gray-700">
+                            Beschreibung
+                        </label>
+                        <div className="mt-1">
+                            <textarea
+                                rows={4}
+                                name="content"
+                                className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+
+                            />
+                        </div>
+                    </div>
+
+                    {/* Image input */}
+                    <div className="mt-5 place-content-center">
+                        <label className="block text-center pt-3 text-sm font-medium text-gray-400">
+                            Ausgewähltes Bild:
+                        </label>
+                        <img id="image-preview" className="items-center justify-center h-64 p-2 hidden m-auto" src="" alt="Preview" />
+                        <div className="flex justify-center">
+                            <label htmlFor="image"
+                                className="inline-flex cursor-pointer items-center px-3 py-2 border border-blue-500 shadow-sm text-sm leading-4 font-medium rounded-md text-blue-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                                <PhotographIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                Bild auswählen
+                            </label>
+                        </div>
+                        
+                        <input id="image" name="image" type="file" className='absolute hidden' onChange={
+                            (e) => {
+                                // display image preview
+                                let reader = new FileReader()
+                                reader.onload = (e) => {
+                                    document.getElementById("image-preview").src = e.target.result
+                                }
+                                reader.readAsDataURL(e.target.files[0])
+                                document.getElementById("image-preview").style.display = "block"
+                            }
+                        }/>
+                        
+                    </div>
+                    <div className="pt-6">
+                        <div className="flex justify-center">
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                className="cursor-pointer inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            >
+                                <SaveIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                Speichern
+                            </button>
+                        </div>
+
+                        <div className="flex justify-center mt-3">
+                            <button
+                                type="button"
+                                onClick={toggle}
+                                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                <XIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                Abbrechen
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     )
 
     try {
         if (authenticated.user) {
             return (
-                <div className="">
+                <div className="grid">
                     {heading}
-                    
-                    <div className="grid sm:grid-cols-3 gap-4">
-                    
-                        {services.map((service) => (
-                            <div className="flex p-3 items-center justify-center bg-white" key={service.ID}>
 
-                                
-                                <ServiceCard service={service} />
-                                
-                          
-                            </div>
+                    {addButton}
+
+                    {serviceForm}
+
+                    <div className="grid sm:grid-cols-3 gap-4">
+
+
+
+                        {services.map((service) => (
+                            // <div className="" key={service.ID}>
+
+
+                            <ServiceCard key={service.ID} service={service} className="" />
+
+
+                            // </div>
 
                         ))}
-                        
+
                     </div>
                 </div>
             )
@@ -44,23 +177,23 @@ function Service({ services }) {
                 <div className="">
                     {heading}
                     <div className="grid sm:grid-cols-3 gap-4">
-                    
+
                         {services.map((service) => (
                             <div className="flex p-3 items-center justify-center bg-white" key={service.ID}>
 
                                 <div className="w-80 rounded-2xl border shadow py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100">
-                            
+
                                     <p className="text-3xl text-gray-700 font-semibold"> {service.title} </p>
                                     <p className="text-sm text-gray-700 font-light mt-2 leading-7"> {service.content} </p>
                                     <div className="">
-                                        <img src={service.picture} />
+                                        <img src={service.image} />
                                     </div>
-                            
+
                                 </div>
-                          
+
                             </div>
                         ))}
-                    
+
                     </div>
                 </div>
             )
@@ -70,16 +203,16 @@ function Service({ services }) {
         return (
             <div className="">
                 {heading}
-                    <div 
-                        style={{
-                            display: show ? "none" : "block"
-                          }}
-                        className="block inset-x-0 pb-2 sm:pb-5"
-                    >
-                        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-                            <div className="p-2 rounded-lg bg-red-400 shadow-lg sm:p-3">
-                                <div className="flex items-center justify-between flex-wrap">
-                                    <div className="w-0 flex-1 flex items-center">
+                <div
+                    style={{
+                        display: show ? "none" : "block"
+                    }}
+                    className="block inset-x-0 pb-2 sm:pb-5"
+                >
+                    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+                        <div className="p-2 rounded-lg bg-red-400 shadow-lg sm:p-3">
+                            <div className="flex items-center justify-between flex-wrap">
+                                <div className="w-0 flex-1 flex items-center">
                                     <span className="flex p-2 rounded-lg bg-white">
                                         <SpeakerphoneIcon className="h-6 w-6 text-red-400" aria-hidden="true" />
                                     </span>
@@ -87,10 +220,10 @@ function Service({ services }) {
                                         <span className="md:hidden">No Services found!</span>
                                         <span className="hidden md:inline">No Services found! Report at <a className="font-bold underline" href="mailto:info@autokueng.ch">info@autokueng.ch</a></span>
                                     </p>
-                                    </div>
-                                    <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-                                    </div>
-                                    <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-2">
+                                </div>
+                                <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+                                </div>
+                                <div className="order-2 flex-shrink-0 sm:order-3 sm:ml-2">
                                     <button
                                         onClick={closeAlert}
                                         type="button"
@@ -99,11 +232,11 @@ function Service({ services }) {
                                         <span className="sr-only">Dismiss</span>
                                         <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
                                     </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
         )
     }

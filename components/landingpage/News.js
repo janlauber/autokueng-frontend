@@ -16,7 +16,7 @@ function News() {
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState()
   const [content, setContent] = useState()
-  const [picture, setPicture] = useState()
+  const [image, setImage] = useState()
   const [loading, setLoading] = useState(true)
 
   const token = Cookies.get('token');
@@ -46,11 +46,11 @@ function News() {
       async () => {
         while(loading) {
           try {
-            const { data: news} = await Api.get('/api/v1/news');
+            const { data: news} = await Api.get('/news');
             if (news) {
               setTitle(news[0].title)
               setContent(news[0].content)
-              setPicture(news[0].picture)
+              setImage(news[0].image)
             }
             setLoading(false)
           } catch (error) {
@@ -75,23 +75,23 @@ function News() {
         var formdata = new FormData()
         formdata.append('image', document.querySelector('#image').files[0])
 
-        const { data: newsPictureUpload } = await DataApi.post('/upload', formdata, {
+        const { data: newsImageUpload } = await DataApi.post('/upload', formdata, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
 
-        if (newsPictureUpload) {
+        if (newsImageUpload) {
           // upload new image url to database
-          setPicture(newsPictureUpload.data.imageUrl)
+          setImage(newsImageUpload.data.imageUrl)
 
           // upload new news to database
           try {
-            const { data: newsPicture} = await Api.put('/api/v1/news', {
-              "picture": newsPictureUpload.data.imageUrl,
+            const { data: newsImage} = await Api.put('/news', {
+              "image": newsImageUpload.data.imageUrl,
             });
-            if (newsPicture) {
-              setPicture(newsPicture.picture)
+            if (newsImage) {
+              setImage(newsImage.image)
             }
             // clear form
             document.querySelector('#image').value = ''
@@ -107,14 +107,14 @@ function News() {
     }
 
     try {
-      const { data: newsText } = await Api.put('/api/v1/news', {
+      const { data: newsText } = await Api.put('/news', {
         "title": document.querySelector('#title').value,
         "content": document.querySelector('#content').value,
       });
       if (newsText) {
         setTitle(newsText.title)
         setContent(newsText.content)
-        setPicture(newsText.picture)
+        setImage(newsText.image)
       } 
     } catch (err) {
       console.log(err)
@@ -179,7 +179,7 @@ function News() {
               }}
           >
             <div>
-              <img src={picture} className="" />
+              <img src={image} className="" />
             </div>
             <div className="divide-y divide-gray-200">
               <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
@@ -231,7 +231,7 @@ function News() {
                 </div>
               </div>
 
-              {/* Picture input */}
+              {/* Image input */}
               <div className="mt-5">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                   Bild
@@ -246,8 +246,8 @@ function News() {
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mt-8">
                   Aktuelles Bild <LinkIcon className="-ml-0.5 mr-2 h-4 w-4 inline" aria-hidden="true" />
                 </label>
-                <a href={picture} target="_blank" rel="noopener noreferrer" className="underline decoration-sky-500">
-                  {picture}
+                <a href={image} target="_blank" rel="noopener noreferrer" className="underline decoration-sky-500">
+                  {image}
                 </a>
                   {/* <PaperClipIcon className="h-5 w-5" aria-hidden="true" />
                   <span className="sr-only">Attach a file</span> */}
