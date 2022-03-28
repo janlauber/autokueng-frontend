@@ -2,6 +2,9 @@ import { SpeakerphoneIcon, ViewGridAddIcon, XIcon, PhotographIcon, SaveIcon } fr
 import React, { useState } from "react"
 import { useAuth } from "../../contexts/auth"
 import ServiceCard from './ServiceCard'
+import Api from "../../config/api"
+import DataApi from '../../config/data-api'
+import Swal from 'sweetalert2'
 
 function Service({ services }) {
     const authenticated = useAuth()
@@ -19,8 +22,73 @@ function Service({ services }) {
         document.getElementById("image-preview").style.display = "none";
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(document.querySelector("#title").value)
+
+        const error = 0;
+
+        const formDataText = new FormData()
+        const formDataImage = new FormData()
+        formDataText.append("title", document.querySelector("#title").value)
+        formDataText.append("content", document.querySelector("#content").value)
+        formDataImage.append("image", document.querySelector("#image").files[0])
+
+        try {
+            const { data: serviceImageUpload } = await DataApi.post('/upload', formDataImage, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (serviceImageUpload) {
+                try {
+                    const { data: serviceUpload } = await Api.post(`/services`, {
+                        "title": document.querySelector("#title").value,
+                        "content": document.querySelector("#content").value,
+                        "image": serviceImageUpload.data.imageUrl,
+                    });
+                    if (serviceUpload) {
+                        // add service to state
+                        services.push(serviceUpload)
+                    }
+                    // clear form
+                    toggle();
+                } catch (err) {
+                    error = 1
+                    console.log(err)
+                }
+            } else {
+                error = 1
+            }
+        } catch (err) {
+            error = 1
+            console.log(err)
+        }
+
+        if (error === 0) {
+            Swal.fire({
+              title: 'Erfolgreich gespeichert',
+              icon: 'success',
+              showConfirmButton: false,
+              toast: true,
+              position: 'top',
+              timer: 2500,
+              timerProgressBar: true,
+            })
+          } else if (error === 1) {
+            Swal.fire({
+              title: 'Fehler beim Speichern',
+              text: 'Service konnte nicht hochgeladen werden',
+              icon: 'error',
+              showConfirmButton: false,
+              toast: true,
+              position: 'top',
+              timer: 2500,
+              timerProgressBar: true,
+            })
+          } 
+
     }
 
     let heading = (
@@ -40,7 +108,7 @@ function Service({ services }) {
             <button
                 onClick={toggle}
                 type="button"
-                className="float-left shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="float-left inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600"
             >
                 <ViewGridAddIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                 Service hinzufügen
@@ -53,12 +121,12 @@ function Service({ services }) {
             style={{
                 display: showServiceForm ? "block" : "none"
             }}
-            className="flex p-3 bg-gray-50"
+            className="flex lg:mx-80 lg:border lg:rounded-xl lg:shadow-md bg-gray-50 lg:my-10"
         >
-            <div className="py-2 px-8">
+            <div className="py-10 px-8">
                 <h2 className="text-xl text-blue-500 font-semibold">Service hinzufügen</h2>
 
-                <form id="service-form">
+                <form id="service-form" onSubmit={handleSubmit}>
                     {/* Title input */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">
@@ -68,8 +136,9 @@ function Service({ services }) {
                             <input
                                 type="text"
                                 name="title"
+                                id="title"
                                 className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-
+                                required
                             />
                         </div>
                     </div>
@@ -82,8 +151,9 @@ function Service({ services }) {
                             <textarea
                                 rows={4}
                                 name="content"
+                                id="content"
                                 className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
-
+                                required
                             />
                         </div>
                     </div>
@@ -102,8 +172,8 @@ function Service({ services }) {
                                 Bild auswählen
                             </label>
                         </div>
-                        
-                        <input id="image" name="image" type="file" className='absolute hidden' onChange={
+
+                        <input id="image" name="image" type="file" className='absolute hidden' required onChange={
                             (e) => {
                                 // display image preview
                                 let reader = new FileReader()
@@ -113,13 +183,13 @@ function Service({ services }) {
                                 reader.readAsDataURL(e.target.files[0])
                                 document.getElementById("image-preview").style.display = "block"
                             }
-                        }/>
-                        
+                        } />
+
                     </div>
                     <div className="pt-6">
                         <div className="flex justify-center">
                             <button
-                                type="button"
+                                type="submit"
                                 onClick={handleSubmit}
                                 className="cursor-pointer inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                             >
@@ -154,7 +224,7 @@ function Service({ services }) {
 
                     {serviceForm}
 
-                    <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 
 
 
@@ -176,7 +246,7 @@ function Service({ services }) {
             return (
                 <div className="">
                     {heading}
-                    <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 
                         {services.map((service) => (
                             <div className="flex p-3 items-center justify-center bg-white" key={service.ID}>

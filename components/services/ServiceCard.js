@@ -43,7 +43,7 @@ export default function ServiceCard({ service }) {
                             icon: 'success',
                             showConfirmButton: false,
                             toast: true,
-                            position: 'top-start',
+                            position: 'top',
                             timer: 2000,
                             timerProgressBar: true,
                         })
@@ -127,7 +127,7 @@ export default function ServiceCard({ service }) {
                 icon: 'success',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top-start',
+                position: 'top',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -138,7 +138,7 @@ export default function ServiceCard({ service }) {
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top-start',
+                position: 'top',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -149,7 +149,7 @@ export default function ServiceCard({ service }) {
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top-start',
+                position: 'top',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -182,15 +182,17 @@ export default function ServiceCard({ service }) {
 
     return (
         <div id={uniqueCardID} className='flex p-3 items-center justify-center bg-white'>
-            <div className="w-80 rounded-2xl border shadow py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100">
-                <div style={{
-                    display: showForm ? "none" : "block"
-                }}
+            <div className="w-80 h-96 rounded-2xl border shadow py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100">
+                <div 
+                    className="flex items-center justify-center"
+                    style={{
+                        display: showForm ? "none" : "block"
+                    }}
                 >
                     <p className="text-3xl text-gray-700 font-semibold"> {title}</p>
                     <p className="text-sm text-gray-700 font-light mt-2 leading-tight whitespace-pre-line"> {content} </p>
                     <div className="">
-                        <img src={image} />
+                        <img className='h-auto' src={image} />
                     </div>
                     {edit}
                 </div>

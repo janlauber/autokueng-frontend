@@ -127,7 +127,7 @@ function News() {
         icon: 'success',
         showConfirmButton: false,
         toast: true,
-        position: 'top-start',
+        position: 'top',
         timer: 2500,
         timerProgressBar: true,
       })
@@ -138,7 +138,7 @@ function News() {
         icon: 'error',
         showConfirmButton: false,
         toast: true,
-        position: 'top-start',
+        position: 'top',
         timer: 2500,
         timerProgressBar: true,
       })
@@ -149,7 +149,7 @@ function News() {
         icon: 'error',
         showConfirmButton: false,
         toast: true,
-        position: 'top-start',
+        position: 'top',
         timer: 2500,
         timerProgressBar: true,
       })

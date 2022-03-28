@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
                         setUser(user);
                     }
                 } catch (error) {
+                    logout("noalert");
                     console.log(error);
                 }
             } else {
@@ -49,30 +50,30 @@ export const AuthProvider = ({ children }) => {
         }
         Cookies.set('token', data["token"]);
         Swal.fire({
-            title: 'Erfolgreich eingeloggt',
-            text: 'Sie sind jetzt eingeloggt',
+            title: 'Eingeloggt!',
             icon: 'success',
             toast: true,
-            position: 'top-start',
+            position: 'top',
             showConfirmButton: false,
             timer: 2000
         });
     }
 
-    const logout = () => {
+    const logout = (noalert) => {
         Cookies.remove('token');
         setUser(null);
         delete Api.defaults.headers.Authorization;
-        Swal.fire({
-            title: 'Ausgeloggt',
-            text: 'Du wurdest erfolgreich abgemeldet',
-            icon: 'success',
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-          });
+        if (!noalert) {
+            Swal.fire({
+                title: 'Ausgeloggt!',
+                icon: 'success',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        }
     }
 
     return (
