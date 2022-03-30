@@ -1,5 +1,5 @@
 
-import { ClockIcon, LinkIcon, PaperClipIcon, PencilIcon, PhotographIcon, SaveIcon, TrashIcon, XIcon } from '@heroicons/react/solid'
+import { ClockIcon, LinkIcon, XCircleIcon, PencilIcon, PhotographIcon, SaveIcon, TrashIcon, XIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
 import Swal from 'sweetalert2'
 import Api from "../../config/api"
@@ -16,12 +16,6 @@ export default function ServiceCard({ service }) {
     const uniqueContentID = `content-${service.ID}`
     const uniqueImageID = `image-${service.ID}`
     const uniqueCardID = `card-${service.ID}`
-
-    const token = Cookies.get('token');
-    if (token) {
-        Api.defaults.headers.Authorization = 'Bearer ' + token;
-        DataApi.defaults.headers.Authorization = 'Bearer ' + token;
-    }
 
     const handleDelete = () => {
         Swal.fire({
@@ -43,7 +37,7 @@ export default function ServiceCard({ service }) {
                             icon: 'success',
                             showConfirmButton: false,
                             toast: true,
-                            position: 'top',
+                            position: 'bottom-end',
                             timer: 2000,
                             timerProgressBar: true,
                         })
@@ -127,7 +121,7 @@ export default function ServiceCard({ service }) {
                 icon: 'success',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top',
+                position: 'bottom-end',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -138,7 +132,7 @@ export default function ServiceCard({ service }) {
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top',
+                position: 'bottom-end',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -149,7 +143,7 @@ export default function ServiceCard({ service }) {
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
-                position: 'top',
+                position: 'bottom-end',
                 timer: 2500,
                 timerProgressBar: true,
             })
@@ -181,19 +175,33 @@ export default function ServiceCard({ service }) {
     )
 
     return (
-        <div id={uniqueCardID} className='flex p-3 items-center justify-center bg-white'>
-            <div className="w-80 h-96 rounded-2xl border shadow py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100">
-                <div 
+        <div id={uniqueCardID} className='flex p-3 my-4 items-center justify-center'>
+            <div
+                className="w-80 h-auto rounded-2xl border shadow-sm py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100"
+
+            >
+                <div
                     className="flex items-center justify-center"
                     style={{
                         display: showForm ? "none" : "block"
                     }}
                 >
-                    <p className="text-3xl text-gray-700 font-semibold"> {title}</p>
-                    <p className="text-sm text-gray-700 font-light mt-2 leading-tight whitespace-pre-line"> {content} </p>
-                    <div className="">
-                        <img className='h-auto' src={image} />
+
+                    <p className="text-3xl text-gray-700 font-semibold">{title}</p>
+                    <p className="text-sm text-gray-700 font-light mt-2 leading-tight whitespace-pre-line">{content}</p>
+
+                    <div
+                        className="w-full h-48 rounded m-auto"
+                        style={{
+                            backgroundImage: `url(${image})`,
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                        }}
+                    >
+
                     </div>
+
                     {edit}
                 </div>
                 <div style={{
@@ -246,25 +254,22 @@ export default function ServiceCard({ service }) {
                             <input id={uniqueImageID} name="image" type="file" className='absolute hidden' />
                         </div>
                         <div className="pt-6">
-                            <div className="flex justify-center">
+                            <div className="py-3">
                                 <button
-                                    type="button"
                                     onClick={handleSubmit}
-                                    className="cursor-pointer inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    type="button"
+                                    className="float-left shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                                 >
                                     <SaveIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                                     Speichern
                                 </button>
-                            </div>
-
-                            <div className="flex justify-center mt-3">
                                 <button
-                                    type="button"
                                     onClick={toggle}
-                                    className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    type="button"
+                                    className="float-right shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                 >
-                                    <XIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                                    Abbrechen
+                                    <XCircleIcon className="-ml-0.5 h-4 w-4" aria-hidden="true" />
+                                    
                                 </button>
                             </div>
                         </div>

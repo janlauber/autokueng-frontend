@@ -19,14 +19,7 @@ let Api = Axios.create({
 
 const token = Cookies.get('token');
 if(token) {
-    Api = Axios.create({
-         baseURL: urls[process.env.NODE_ENV],
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            }
-    });
+    Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
 export default Api;

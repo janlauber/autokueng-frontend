@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
             title: 'Eingeloggt!',
             icon: 'success',
             toast: true,
-            position: 'top',
+            position: 'bottom-end',
             showConfirmButton: false,
             timer: 2000
         });
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
                 title: 'Ausgeloggt!',
                 icon: 'success',
                 toast: true,
-                position: 'top',
+                position: 'bottom-end',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,

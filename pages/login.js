@@ -20,7 +20,7 @@ export default function Login() {
                 text: "Benutzername oder Passwort falsch",
                 icon: 'error',
                 toast: true,
-                position: 'top',
+                position: 'bottom-end',
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,

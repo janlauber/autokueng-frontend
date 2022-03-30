@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Heading from "../components/Heading";
 export default function Fahrzeugpark() {
   // Works when host file from 127.0.0.1 is set to autokueng.ch for dev enviroment
   // When production, it sould work by default
@@ -12,10 +13,11 @@ export default function Fahrzeugpark() {
       //document.head.removeChild(script);
     };
   }, []);
+
   return (
     <div>
       <div id="autoscout24">
-        <h2>Autoscout24</h2>
+        <Heading title="FAHRZEUGPARK" subtitle="Unser Fahrzeugpark auf AutoScout24" />
         <div
           data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276"
           className="embedded-content-area"

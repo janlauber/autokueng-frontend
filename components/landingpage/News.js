@@ -1,7 +1,6 @@
-import Image from 'next/image'
+
 import { useEffect, useState } from 'react'
-import { ClockIcon, LinkIcon, PaperClipIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
-import { useRouter } from 'next/router'
+import { ClockIcon, XCircleIcon, PhotographIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
 import Swal from 'sweetalert2'
 import { useAuth } from '../../contexts/auth';
 import Api from "../../config/api";
@@ -29,6 +28,9 @@ function News() {
   function toggle() {
     setShowEdit(!showEdit)
     setShowForm(!showForm)
+    document.getElementById("news-form").reset();
+    document.getElementById("image-preview").src = "";
+    document.getElementById("image-preview").style.display = "none";
   }
 
   useEffect(() => {
@@ -44,9 +46,9 @@ function News() {
   useEffect(() => {
     (
       async () => {
-        while(loading) {
+        while (loading) {
           try {
-            const { data: news} = await Api.get('/news');
+            const { data: news } = await Api.get('/news');
             if (news) {
               setTitle(news[0].title)
               setContent(news[0].content)
@@ -62,14 +64,14 @@ function News() {
       }
     )()
   }, [])
-    
+
 
   // POST API News Data
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const error = 0
-    
+
     if (document.querySelector('#image').files[0]) {
       try {
         var formdata = new FormData()
@@ -87,7 +89,7 @@ function News() {
 
           // upload new news to database
           try {
-            const { data: newsImage} = await Api.put('/news', {
+            const { data: newsImage } = await Api.put('/news', {
               "image": newsImageUpload.data.imageUrl,
             });
             if (newsImage) {
@@ -115,7 +117,7 @@ function News() {
         setTitle(newsText.title)
         setContent(newsText.content)
         setImage(newsText.image)
-      } 
+      }
     } catch (err) {
       console.log(err)
       error = 2
@@ -127,7 +129,7 @@ function News() {
         icon: 'success',
         showConfirmButton: false,
         toast: true,
-        position: 'top',
+        position: 'bottom-end',
         timer: 2500,
         timerProgressBar: true,
       })
@@ -138,7 +140,7 @@ function News() {
         icon: 'error',
         showConfirmButton: false,
         toast: true,
-        position: 'top',
+        position: 'bottom-end',
         timer: 2500,
         timerProgressBar: true,
       })
@@ -149,7 +151,7 @@ function News() {
         icon: 'error',
         showConfirmButton: false,
         toast: true,
-        position: 'top',
+        position: 'bottom-end',
         timer: 2500,
         timerProgressBar: true,
       })
@@ -157,46 +159,51 @@ function News() {
 
     setShowForm(false)
   }
-    
+
   return (
-    <div className="py-3 pt-10 sm:max-w-xl sm:mx-auto">
+    <div 
+    className={
+      loading ?
+        "py-3 pt-10 sm:mx-40 lg:mx-64" :
+        "py-3 pt-10 max-w-xl sm:mx-auto"
+    }>
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
-          NEWS
+        NEWS
       </h1>
-      
+
       <div className="px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-14 sm:pb-10">
         <div className="max-w-md mx-auto">
 
           {loading ?
-          <div>
-            <Skeleton height={100} width={200} count={1} />
-            <Skeleton height={40} width={200} count={2} />
-          </div>
-          :
-          <div
-            style={{
-              display: showForm ? "none" : "block"
-              }}
-          >
-            <div>
-              <img src={image} className="" />
+            <div className=''>
+              <Skeleton className='h-20 w-full' count={1} />
+              <Skeleton className='h-10 w-full' count={2} />
             </div>
-            <div className="divide-y divide-gray-200">
-              <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
-                <h1 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+            :
+            <div
+              style={{
+                display: showForm ? "none" : "block"
+              }}
+            >
+              <div>
+                <img src={image} className="" />
+              </div>
+              <div className="divide-y divide-gray-200">
+                <div className="py-8  leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                  <h1 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
                     <span className="block text-blue-500">{title}</span>
-                </h1>
-                <p className="whitespace-pre-line">{content}</p>
+                  </h1>
+                  <p className="whitespace-pre-line">{content}</p>
+                </div>
               </div>
             </div>
-          </div>
           }
 
           <div style={{
             display: showForm ? "block" : "none"
-            }}
+          }}
           >
-            <form onSubmit={submit} className="">
+            <form onSubmit={handleSubmit} id="news-form">
               <div className="text-center mb-6">
                 <h1 className="font-bold text-blue-500 text-2xl" >News bearbeiten</h1>
               </div>
@@ -233,52 +240,55 @@ function News() {
 
               {/* Image input */}
               <div className="mt-5">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                  Bild
+                <label className="block text-center pt-3 text-sm font-medium text-gray-400">
+                  Ausgewähltes Bild:
                 </label>
-                <input
-                  type="file"
-                  name="image"
-                  id="image"
-                  // onChange={(e) => setSelectedFile(e.target.files[0])}
-                  className="de"
-                />
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mt-8">
-                  Aktuelles Bild <LinkIcon className="-ml-0.5 mr-2 h-4 w-4 inline" aria-hidden="true" />
-                </label>
-                <a href={image} target="_blank" rel="noopener noreferrer" className="underline decoration-sky-500">
-                  {image}
-                </a>
-                  {/* <PaperClipIcon className="h-5 w-5" aria-hidden="true" />
-                  <span className="sr-only">Attach a file</span> */}
+                <img id="image-preview" className="items-center justify-center h-64 p-2 hidden m-auto" src="" alt="Preview" />
+                <div className="flex justify-center">
+                  <label htmlFor="image"
+                    className="inline-flex cursor-pointer items-center px-3 py-2 border border-blue-500 shadow-sm text-sm leading-4 font-medium rounded-md text-blue-500 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    <PhotographIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    Bild auswählen
+                  </label>
+                </div>
+
+                <input id="image" name="image" type="file" className='absolute hidden' required onChange={
+                  (e) => {
+                    // display image preview
+                    let reader = new FileReader()
+                    reader.onload = (e) => {
+                      document.getElementById("image-preview").src = e.target.result
+                    }
+                    reader.readAsDataURL(e.target.files[0])
+                    document.getElementById("image-preview").style.display = "block"
+                  }
+                } />
               </div>
               <div className="pt-6">
-                <div className="flex justify-center">
+                <div className="py-3">
                   <button
+                    onClick={handleSubmit}
                     type="button"
-                    onClick={submit}
-                    className="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="float-left shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
                     <SaveIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                     Speichern
                   </button>
-                </div>
-                
-                <div className="flex justify-center mt-3">
                   <button
-                    type="button"
                     onClick={toggle}
-                    className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    type="button"
+                    className="float-right shadow-lg inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-500 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                   >
-                    <XIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                    <XCircleIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                     Abbrechen
                   </button>
                 </div>
               </div>
             </form>
           </div>
-          <div 
-            className="mb-6"  
+          <div
+            className="mb-6"
             style={{
               display: showEdit & !showForm ? "block" : "none"
             }}
@@ -295,7 +305,7 @@ function News() {
         </div>
       </div>
     </div>
-    )
+  )
 }
 
 export default News

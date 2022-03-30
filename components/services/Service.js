@@ -68,35 +68,30 @@ function Service({ services }) {
 
         if (error === 0) {
             Swal.fire({
-              title: 'Erfolgreich gespeichert',
-              icon: 'success',
-              showConfirmButton: false,
-              toast: true,
-              position: 'top',
-              timer: 2500,
-              timerProgressBar: true,
+                title: 'Erfolgreich gespeichert',
+                icon: 'success',
+                showConfirmButton: false,
+                toast: true,
+                position: 'bottom-end',
+                timer: 2500,
+                timerProgressBar: true,
             })
-          } else if (error === 1) {
+        } else if (error === 1) {
             Swal.fire({
-              title: 'Fehler beim Speichern',
-              text: 'Service konnte nicht hochgeladen werden',
-              icon: 'error',
-              showConfirmButton: false,
-              toast: true,
-              position: 'top',
-              timer: 2500,
-              timerProgressBar: true,
+                title: 'Fehler beim Speichern',
+                text: 'Service konnte nicht hochgeladen werden',
+                icon: 'error',
+                showConfirmButton: false,
+                toast: true,
+                position: 'bottom-end',
+                timer: 2500,
+                timerProgressBar: true,
             })
-          } 
+        }
 
     }
 
-    let heading = (
-        <div className="my-6 text-center">
-            <h1 className="my-2 font-bold text-4xl">SERVICES</h1>
-            <h2 className="text-xl text-blue-500 font-semibold">Unsere Dienstleistungen im Überblick</h2>
-        </div>
-    )
+
 
     let addButton = (
         <div
@@ -218,7 +213,6 @@ function Service({ services }) {
         if (authenticated.user) {
             return (
                 <div className="grid">
-                    {heading}
 
                     {addButton}
 
@@ -245,7 +239,6 @@ function Service({ services }) {
         } else {
             return (
                 <div className="">
-                    {heading}
                     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 
                         {services.map((service) => (
@@ -255,8 +248,15 @@ function Service({ services }) {
 
                                     <p className="text-3xl text-gray-700 font-semibold"> {service.title} </p>
                                     <p className="text-sm text-gray-700 font-light mt-2 leading-7"> {service.content} </p>
-                                    <div className="">
-                                        <img src={service.image} />
+                                    <div
+                                        className="w-full h-48 rounded m-auto"
+                                        style={{
+                                            backgroundImage: `url(${service.image})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            backgroundRepeat: 'no-repeat',
+                                        }}
+                                    >
                                     </div>
 
                                 </div>
@@ -272,7 +272,6 @@ function Service({ services }) {
         // incase of error
         return (
             <div className="">
-                {heading}
                 <div
                     style={{
                         display: show ? "none" : "block"

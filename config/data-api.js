@@ -1,4 +1,6 @@
 import Axios from 'axios';
+import Cookies from 'js-cookie';
+
 
 let urls = {
     test: 'https://data.autokueng.ch/test', // test
@@ -6,12 +8,17 @@ let urls = {
     production: 'https://data.autokueng.ch', // production
 }
 
-const DataApi = Axios.create({
+let DataApi = Axios.create({
     baseURL: urls[process.env.NODE_ENV],
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
 });
+
+const token = Cookies.get('token');
+if(token) {
+    DataApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
 export default DataApi;
