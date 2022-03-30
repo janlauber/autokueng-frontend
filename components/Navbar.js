@@ -2,6 +2,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, LoginIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
+import { useAuth } from '../contexts/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
@@ -11,163 +12,117 @@ function classNames(...classes) {
 }
 
 function Navbar(props) {
-  // const router = useRouter()
-  const [loginStatus, setLoginStatus] = useState("")
-  const [auth, setAuth] = useState()
-  let [showUser, setShowUser] = useState()
-  let [responsiveShowUser, setResponsiveShowUser] = useState()
+  const authenticate = useAuth()
+  const router = useRouter()
+  let loginStatus
+  let responsiveShowUser
+  let showUser = (
+    <Link href="/login">
+      <button
+        type="button"
+        className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      >
+        <LoginIcon className="h-5 w-5" aria-hidden="true" />
+      </button>
+    </Link>
+  )
 
-  useEffect(() => {
-    setAuth(props.auth)
-  }, [props.auth])
-  
-  const changeLoginStatus = async () => {
-
-    try {
-      if(auth === true) {
-        await fetch('http://localhost:8000/api/v1/logout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-        })
-      } 
-      setLoginStatus("Log in")
-      setAuth(false)
-
-      setShowUser(
-        <Link href="/login">
-          <button
-            type="button"
-            className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <LoginIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </Link>
-      )
-
-      Swal.fire({
-        title: 'Ausgeloggt',
-        text: 'Du wurdest erfolgreich abgemeldet',
-        icon: 'success',
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-      })
-    } catch (error) {
-      Swal.fire({
-        title: 'Fehler',
-        text: 'Es ist ein Fehler aufgetreten',
-        icon: 'error',
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-      })
-    }
-  }
-  useEffect(() => {
-    
-    if(auth === true) {
-      setLoginStatus(`Log out`)
-      setAuth(true)
-      setShowUser(
-        <div>
-          <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-            <span className="sr-only">Open user menu</span>
-            <img
-              className="h-8 w-8 rounded-full"
-              src="/images/avatars/admin.png"
-              alt=""
-            />
-          </Menu.Button>
-        </div>
-      )
-      setResponsiveShowUser(
-        <div className="pt-4 flex items-center px-4">
+  if (authenticate.user) {
+    loginStatus = ("Log out")
+    showUser = (
+      <div>
+        <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <span className="sr-only">Open user menu</span>
+          <img
+            className="h-8 w-8 rounded-full"
+            src="/images/avatars/admin.png"
+            alt=""
+          />
+        </Menu.Button>
+      </div>
+    )
+    responsiveShowUser = (
+      <div className="pt-4 flex items-center px-4">
           <div className="flex-shrink-0">
             <img
-              className="h-10 w-10 rounded-full ring-blue-500 ring-2"
-              src="/images/avatars/admin.png"
-              alt=""
-            />
-          </div>
-          <div className="ml-3">
-            <div className="text-base font-medium text-gray-800">admin</div>
-          </div>
+            className="h-10 w-10 rounded-full ring-blue-500 ring-2"
+            src="/images/avatars/admin.png"
+            alt=""
+          />
         </div>
-      )
-    } else {
-      setLoginStatus("Log in")
-      setAuth(false)
+        <div className="ml-3">
+          <div className="text-base font-medium text-gray-800">{authenticate.user["username"]}</div>
+        </div>
+      </div>
+    )
+  } else {
+    loginStatus = ("Log in")
+  }
 
-      setShowUser(
-        <Link href="/login">
-          <button
-            type="button"
-            className="inline-flex items-center p-1.5 border border-transparent rounded-full shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            <LoginIcon className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </Link>
-      )
+  const changeLoginStatus = () => {
+    if (authenticate.user) {
+      authenticate.logout()
+      router.push('/')
+    } else {
+      router.push('/login')
     }
-  }, [auth])
+  }
 
   return (
     <Disclosure as="nav" className="bg-white shadow">
 
-      
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
+                    <Link href="/">
                       <img
-                        className="block lg:hidden h-8 w-auto"
+                        className="block lg:hidden h-8 w-auto cursor-pointer"
                         src="/images/logo/logo_text_colored_primary.svg"
                         alt="Workflow"
                       />
+                    </Link>
+                    <Link href="/">
                       <img
-                        className="hidden lg:block h-8 w-auto"
+                        className="hidden lg:block h-8 w-auto cursor-pointer"
                         src="/images/logo/logo_text_colored_primary.svg"
                         alt="Workflow"
                       />
+                    </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-blue-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link href="/">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Home
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/fahrzeugpark">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Fahrzeugpark
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/services">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Services
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/firma">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Firma
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/links">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Links
-                    </a>
+                    </span>
                   </Link>
                   <Link href="/kontakt">
-                    <a className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                       Kontakt
-                    </a>
+                    </span>
                   </Link>
                 </div>
               </div>
@@ -191,7 +146,7 @@ function Navbar(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            onClick={() => { props.updateState(); changeLoginStatus() }}
+                            onClick={() => { changeLoginStatus() }}
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             {loginStatus}
@@ -268,17 +223,17 @@ function Navbar(props) {
             <div className="pt-0 pb-3 border-t border-gray-200">
               {responsiveShowUser}
               <div className="mt-3 space-y-1">
-                <a 
+                <span
+                  className='cursor-pointer'
                   onClick={changeLoginStatus}
                 >
                   <Disclosure.Button
                     as="a"
-                    href="/login"
                     className="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100 cursor-pointer"
                   >
                     {loginStatus}
                   </Disclosure.Button>
-                </a>
+                </span>
               </div>
             </div>
 

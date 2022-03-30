@@ -1,21 +1,29 @@
-import Head from 'next/head'
-
+import { useEffect } from "react";
+import Heading from "../components/Heading";
 export default function Fahrzeugpark() {
-    return (
-		<>
-			<div className="text-center">
-				<Head>
-					<title>Autokueng - Fahrzeugpark</title>
-					<script src="https://www.autoscout24.ch/MVC/Content/as24-hci-desktop/js/e.min.js"/>
-				</Head>
-				<div className="my-6">
-					<h1 className="my-2 font-bold text-4xl">FAHRZEUGPARK</h1>
-					<h2 className="text-xl text-blue-600 font-semibold">Autoscout24</h2>
-				</div>
-				<div data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276" className="embedded-content-area"></div>
-			</div>
-		</>
-    )
-  }
+  // Works when host file from 127.0.0.1 is set to autokueng.ch for dev enviroment
+  // When production, it sould work by default
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src =
+      "https://www.autoscout24.ch/MVC/Content/as24-hci-desktop/js/e.min.js";
+    script.async = true;
+    document.head.appendChild(script);
+    return () => {
+      //document.head.removeChild(script);
+    };
+  }, []);
 
-  
+  return (
+    <div>
+      <div id="autoscout24">
+        <Heading title="FAHRZEUGPARK" subtitle="Unser Fahrzeugpark auf AutoScout24" />
+        <div
+          data-embedded-src="https://www.autoscout24.ch/de/hci/list?design=846&filter=1276"
+          className="embedded-content-area"
+          style={{ padding: "0px", zoom: "1", position: "relative" }}
+        ></div>
+      </div>
+    </div>
+  );
+}
