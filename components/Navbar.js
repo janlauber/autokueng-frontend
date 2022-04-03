@@ -62,7 +62,6 @@ function Navbar(props) {
   const changeLoginStatus = () => {
     if (authenticate.user) {
       authenticate.logout()
-      router.push('/')
     } else {
       router.push('/login')
     }

@@ -104,7 +104,7 @@ export default function Gallery({ carouselItems }) {
                     className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600"
                 >
                     <PhotographIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                    Member hinzufügen
+                    Bild hinzufügen
                 </button>
                 {form}
             </div>

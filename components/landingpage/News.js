@@ -46,23 +46,21 @@ function News() {
   useEffect(() => {
     (
       async () => {
-        while (loading) {
-          try {
-            const { data: news } = await Api.get('/news');
-            if (news) {
-              setTitle(news[0].title)
-              setContent(news[0].content)
-              setImage(news[0].image)
-            }
-            setLoading(false)
-          } catch (error) {
-            console.log(error);
+        try {
+          const { data: news } = await Api.get('/news');
+          if (news) {
+            setTitle(news[0].title)
+            setContent(news[0].content)
+            setImage(news[0].image)
           }
-          // Timeout
-          await new Promise(resolve => setTimeout(resolve, 1000));
+          setLoading(false)
+        } catch (error) {
+          console.log(error);
         }
+        // Timeout
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
-    )()
+    )(loading)
   }, [])
 
 
@@ -161,12 +159,12 @@ function News() {
   }
 
   return (
-    <div 
-    className={
-      loading ?
-        "py-3 pt-10 sm:mx-40 lg:mx-64" :
-        "py-3 pt-10 max-w-xl sm:mx-auto"
-    }>
+    <div
+      className={
+        loading ?
+          "py-3 pt-10 sm:mx-40 lg:mx-64" :
+          "py-3 pt-10 max-w-xl sm:mx-auto"
+      }>
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
         NEWS
       </h1>
