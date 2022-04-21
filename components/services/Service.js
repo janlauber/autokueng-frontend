@@ -2,7 +2,7 @@ import { SpeakerphoneIcon, ViewGridAddIcon, XIcon, PhotographIcon, SaveIcon } fr
 import React, { useState } from "react"
 import { useAuth } from "../../contexts/auth"
 import ServiceCard from './ServiceCard'
-import Api from "../../config/api"
+import Api from "../../config/Api"
 import DataApi from '../../config/data-api'
 import Swal from 'sweetalert2'
 

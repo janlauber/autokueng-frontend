@@ -1,7 +1,7 @@
 import { useAuth } from "../../contexts/auth";
 import { PhotographIcon, SaveIcon, TrashIcon, XCircleIcon } from "@heroicons/react/solid";
 import Swal from 'sweetalert2'
-import Api from "../../config/api"
+import Api from "../../config/Api"
 import DataApi from "../../config/data-api"
 import React, { useState, useEffect } from "react";
 import Lightbox from 'react-image-lightbox';

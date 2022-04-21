@@ -2,7 +2,7 @@ import { useAuth } from "../../contexts/auth"
 import { ClockIcon, LinkIcon, PaperClipIcon, PencilIcon, PhotographIcon, SaveIcon, TrashIcon, XCircleIcon, XIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
 import Swal from 'sweetalert2'
-import Api from "../../config/api"
+import Api from "../../config/Api"
 import DataApi from "../../config/data-api"
 
 export default function MemberCard({ member }) {

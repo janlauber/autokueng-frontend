@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { ClockIcon, XCircleIcon, PhotographIcon, PencilIcon, SaveIcon, XIcon } from '@heroicons/react/solid'
 import Swal from 'sweetalert2'
 import { useAuth } from '../../contexts/auth';
-import Api from "../../config/api";
+import Api from "../../config/Api";
 import DataApi from '../../config/data-api'
 import Cookies from 'js-cookie'
 import Skeleton from 'react-loading-skeleton'

@@ -1,5 +1,5 @@
 import Heading from "../components/Heading"
-import Api from "../config/api"
+import Api from "../config/Api"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from 'react'
