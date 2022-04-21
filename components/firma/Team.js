@@ -2,7 +2,7 @@ import MemberCard from "./MemberCard";
 import { useAuth } from "../../contexts/auth";
 import React, { useState } from "react";
 import { SpeakerphoneIcon, ViewGridAddIcon, XCircleIcon, PhotographIcon, SaveIcon, UserAddIcon } from '@heroicons/react/solid';
-import Api from "../../config/api"
+import Api from "../../config/Api"
 import DataApi from '../../config/data-api'
 import Swal from 'sweetalert2'
 

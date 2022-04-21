@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from 'js-cookie'
 import Swal from 'sweetalert2'
 
-import Api from "../config/api";
+import Api from "../config/Api";
 
 const AuthContext = createContext({});
 

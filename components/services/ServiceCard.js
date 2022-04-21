@@ -2,7 +2,7 @@
 import { ClockIcon, LinkIcon, XCircleIcon, PencilIcon, PhotographIcon, SaveIcon, TrashIcon, XIcon } from '@heroicons/react/solid'
 import React, { useState } from "react"
 import Swal from 'sweetalert2'
-import Api from "../../config/api"
+import Api from "../../config/Api"
 import DataApi from '../../config/data-api'
 import Cookies from 'js-cookie'
 

@@ -1,8 +1,7 @@
+import ContactForm from "../components/kontakt/contactForm";
+
 export default function Kontakt() {
-    return (
-      <>
-        <h1>Hello Kontakt.js</h1>
-      </>
-    )
-  }
-  
+  return (
+    <ContactForm />
+  )
+}

@@ -2,7 +2,7 @@
 import { CheckCircleIcon, ChevronRightIcon, LinkIcon, MailIcon, TrashIcon } from '@heroicons/react/solid'
 import { useAuth } from "../../contexts/auth";
 import Swal from 'sweetalert2'
-import Api from "../../config/api"
+import Api from "../../config/Api"
 
 const applications = [
     {

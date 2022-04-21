@@ -1,7 +1,7 @@
 import Service from "../components/services/Service"
 import Head from 'next/head'
 import { useEffect, useState } from 'react';
-import Api from "../config/api";
+import Api from "../config/Api";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Heading from "../components/Heading";
