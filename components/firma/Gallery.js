@@ -4,7 +4,6 @@ import Swal from 'sweetalert2'
 import Api from "../../config/Api"
 import DataApi from "../../config/data-api"
 import React, { useState, useEffect } from "react";
-import Lightbox from 'react-image-lightbox';
 
 export default function Gallery({ carouselItems }) {
     const authenticate = useAuth();
