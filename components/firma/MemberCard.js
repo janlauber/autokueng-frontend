@@ -9,11 +9,13 @@ export default function MemberCard({ member }) {
     const authenticate = useAuth();
     const [showForm, setShowForm] = useState(false);
     const [name, setName] = useState(member.name);
+    const [quote, setQuote] = useState(member.quote);
     const [role, setRole] = useState(member.role);
     const [image, setImage] = useState(member.image);
 
     const uniqueCardID = `member-card-${member.ID}`;
     const uniqueNameID = `member-name-${member.ID}`;
+    const uniqueQuoteID = `member-quote-${member.ID}`;
     const uniqueRoleID = `member-role-${member.ID}`;
     const uniqueImageID = `member-image-${member.ID}`;
 
@@ -103,6 +105,7 @@ export default function MemberCard({ member }) {
 
             const { data: memberResponse } = await Api.put(`/members/${member.ID}`, {
                 "name": document.getElementById(uniqueNameID).value,
+                "quote": document.getElementById(uniqueQuoteID).value,
                 "role": document.getElementById(uniqueRoleID).value,
             })
 
@@ -110,6 +113,7 @@ export default function MemberCard({ member }) {
             if (memberResponse && error === 0) {
                 setName(memberResponse.name)
                 setRole(memberResponse.role)
+                setQuote(memberResponse.quote)
                 setImage(memberResponse.image)
                 setShowForm(false)
             }
@@ -187,6 +191,21 @@ export default function MemberCard({ member }) {
                         id={uniqueNameID}
                         className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                         defaultValue={name}
+                    />
+                </div>
+            </div>
+            {/* Zitat input */}
+            <div className="mt-5">
+                <label className="block text-sm font-medium text-gray-700">
+                    Zitat
+                </label>
+                <div className="mt-1">
+                    <input
+                        type="text"
+                        name="quote"
+                        id={uniqueQuoteID}
+                        className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                        defaultValue={quote}
                     />
                 </div>
             </div>

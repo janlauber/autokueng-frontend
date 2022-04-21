@@ -3,12 +3,23 @@ import ReCAPTCHA from "react-google-recaptcha";
 import Api from '../../config/Api'
 import Swal from 'sweetalert2';
 import { useEffect, useState } from 'react';
+import React from 'react';
 
 export default function ContactForm() {
 
-    const [captchaResponse, setCaptchaResponse] = useState(null);
+    const [captchaCode, setCaptchaCode] = useState("");
 
-    async function handleSubmit() {
+    const onReCAPTCHAChange = (captchaCode) => {
+        if (!captchaCode) {
+            return;
+        }
+
+        setCaptchaCode(captchaCode);
+    }
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
         const body = {
             "firstname": document.getElementById('first-name').value,
             "lastname": document.getElementById('last-name').value,
@@ -16,7 +27,7 @@ export default function ContactForm() {
             "phone": document.getElementById('phone').value,
             "subject": document.getElementById('subject').value,
             "message": document.getElementById('message').value,
-            "g-recaptcha-response": captchaResponse
+            "g-recaptcha-response": captchaCode
         }
 
         if (body.firstname === '' || body.lastname === '' || body.email === '' || body.phone === '' || body.subject === '' || body.message === '') {
@@ -31,25 +42,45 @@ export default function ContactForm() {
                 showConfirmButton: false,
                 showCloseButton: true,
             });
+            return;
         }
 
-        const response = await Api.post('/contact', body)
-        if (response.status === 200) {
-            Swal.fire({
-                title: 'Erfolgreich!',
-                text: 'Ihre Nachricht wurde erfolgreich versendet!',
-                icon: 'success',
-                toast: true,
-                position: 'top',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                showCloseButton: true,
-            });
-        } else {
+        try {
+            const response = await Api.post('/contact', body)
+            if (response.status === 200) {
+                Swal.fire({
+                    title: 'Erfolgreich!',
+                    text: 'Ihre Nachricht wurde erfolgreich versendet!',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                });
+
+                // clear form
+                document.getElementById("contact-form").reset();
+                setCaptchaCode("");
+                return;
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Ihre Nachricht konnte nicht versendet werden!',
+                    icon: 'error',
+                    toast: true,
+                    position: 'top',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                });
+            }
+        } catch (error) {
             Swal.fire({
                 title: 'Error!',
-                text: 'Ihre Nachricht konnte nicht versendet werden!',
+                text: error,
                 icon: 'error',
                 toast: true,
                 position: 'top',
@@ -215,7 +246,7 @@ export default function ContactForm() {
                         {/* Contact form */}
                         <div className="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12">
                             <h3 className="text-lg font-medium text-gray-900">Senden Sie uns eine Nachricht</h3>
-                            <form action="#" method="POST" className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+                            <form id="contact-form" className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
                                 <div>
                                     <label htmlFor="first-name" className="block text-sm font-medium text-gray-900">
                                         Vorname
@@ -266,9 +297,6 @@ export default function ContactForm() {
                                         <label htmlFor="phone" className="block text-sm font-medium text-gray-900">
                                             Telefon
                                         </label>
-                                        <span id="phone-optional" className="text-sm text-gray-500">
-                                            Optional
-                                        </span>
                                     </div>
                                     <div className="mt-1">
                                         <input
@@ -278,7 +306,6 @@ export default function ContactForm() {
                                             autoComplete="tel"
                                             required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
-                                            aria-describedby="phone-optional"
                                         />
                                     </div>
                                 </div>
@@ -322,13 +349,7 @@ export default function ContactForm() {
                                         <ReCAPTCHA
                                             sitekey="6LeZEmUUAAAAAOajaQlIovsPppATe8si4lr_u3nm"
                                             size="normal"
-                                            onChange={
-                                                (value) => {
-                                                    this.setState({
-                                                        recaptchaValue: value
-                                                    })
-                                                }
-                                            }
+                                            onChange={onReCAPTCHAChange}
                                         />
                                     </div>
                                 </div>
