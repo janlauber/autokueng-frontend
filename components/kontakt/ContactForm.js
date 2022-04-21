@@ -1,22 +1,66 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
 import { MailIcon, PhoneIcon } from '@heroicons/react/outline'
+import ReCAPTCHA from "react-google-recaptcha";
+import Api from '../../config/Api'
+import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react';
 
 export default function ContactForm() {
+
+    const [captchaResponse, setCaptchaResponse] = useState(null);
+
+    async function handleSubmit() {
+        const body = {
+            "firstname": document.getElementById('first-name').value,
+            "lastname": document.getElementById('last-name').value,
+            "email": document.getElementById('email').value,
+            "phone": document.getElementById('phone').value,
+            "subject": document.getElementById('subject').value,
+            "message": document.getElementById('message').value,
+            "g-recaptcha-response": captchaResponse
+        }
+
+        if (body.firstname === '' || body.lastname === '' || body.email === '' || body.phone === '' || body.subject === '' || body.message === '') {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Bitte alle Felder ausfüllen!',
+                icon: 'error',
+                toast: true,
+                position: 'top',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+        }
+
+        const response = await Api.post('/contact', body)
+        if (response.status === 200) {
+            Swal.fire({
+                title: 'Erfolgreich!',
+                text: 'Ihre Nachricht wurde erfolgreich versendet!',
+                icon: 'success',
+                toast: true,
+                position: 'top',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ihre Nachricht konnte nicht versendet werden!',
+                icon: 'error',
+                toast: true,
+                position: 'top',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                showCloseButton: true,
+            });
+        }
+    }
+
     return (
         <div className="">
             <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
@@ -182,6 +226,7 @@ export default function ContactForm() {
                                             name="first-name"
                                             id="first-name"
                                             autoComplete="given-name"
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
                                         />
                                     </div>
@@ -196,6 +241,7 @@ export default function ContactForm() {
                                             name="last-name"
                                             id="last-name"
                                             autoComplete="family-name"
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
                                         />
                                     </div>
@@ -210,6 +256,7 @@ export default function ContactForm() {
                                             name="email"
                                             type="email"
                                             autoComplete="email"
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
                                         />
                                     </div>
@@ -229,6 +276,7 @@ export default function ContactForm() {
                                             name="phone"
                                             id="phone"
                                             autoComplete="tel"
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
                                             aria-describedby="phone-optional"
                                         />
@@ -243,6 +291,7 @@ export default function ContactForm() {
                                             type="text"
                                             name="subject"
                                             id="subject"
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border-gray-300 rounded-md"
                                         />
                                     </div>
@@ -261,9 +310,25 @@ export default function ContactForm() {
                                             id="message"
                                             name="message"
                                             rows={4}
+                                            required
                                             className="py-3 px-4 block w-full shadow-sm text-gray-900 focus:ring-blue-500 focus:border-blue-500 border border-gray-300 rounded-md"
                                             aria-describedby="message-max"
                                             defaultValue={''}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <div className="mt-8">
+                                        <ReCAPTCHA
+                                            sitekey="6LeZEmUUAAAAAOajaQlIovsPppATe8si4lr_u3nm"
+                                            size="normal"
+                                            onChange={
+                                                (value) => {
+                                                    this.setState({
+                                                        recaptchaValue: value
+                                                    })
+                                                }
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -271,6 +336,7 @@ export default function ContactForm() {
                                     <button
                                         type="submit"
                                         className="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto"
+                                        onClick={handleSubmit}
                                     >
                                         Senden
                                     </button>
