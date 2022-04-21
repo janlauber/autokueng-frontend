@@ -36,6 +36,7 @@ export default function Team({ members }) {
           const { data: memberUpload } = await Api.post(`/members`, {
             "name": document.querySelector("#name").value,
             "role": document.querySelector("#role").value,
+            "quote": document.querySelector("#quote").value,
             "image": memberImageUpload.data.imageUrl,
           });
           if (memberUpload) {

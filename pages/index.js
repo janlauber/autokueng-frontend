@@ -4,6 +4,7 @@ import About from '../components/landingpage/About'
 import Services from '../components/landingpage/Services'
 import Stats from '../components/landingpage/Stats'
 import Head from 'next/head'
+import Testmonial from '../components/landingpage/Testmonial'
 
 export default function Home(props) {
   return (
@@ -16,6 +17,7 @@ export default function Home(props) {
       <About />
       <Services />
       <Stats stats=""/>
+      <Testmonial />
     </>
   )
 }
