@@ -4,13 +4,13 @@ import Cookies from 'js-cookie';
 let version = 'v1';
 
 let urls = {
-    test: 'https://api.autokueng.ch/test/api/' + version, // test
+    test: 'http://api.autokueng.ch:8000/api/' + version, // test on kubernetes kind cluster locally
     development: 'http://localhost:8000/api/' + version, // local development
     production: 'https://api.autokueng.ch/api/' + version, // production
 }
 
 let Api = Axios.create({
-    baseURL: urls[process.env.NODE_ENV],
+    baseURL: urls[process.env.NEXT_PUBLIC_BACKEND_URL], 
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
