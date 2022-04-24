@@ -75,5 +75,5 @@ jobs:
           push: true
           tags: test-${{ steps.meta.outputs.tags }}
           labels: test-${{ steps.meta.outputs.labels }}
-          build-arg:
-            NEXT_PUBLIC_BACKEND_URL: test
+          build-args:
+            - NEXT_PUBLIC_BACKEND_URL=test
