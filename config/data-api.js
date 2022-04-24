@@ -1,15 +1,14 @@
 import Axios from 'axios';
 import Cookies from 'js-cookie';
 
-
 let urls = {
-    test: 'https://data.autokueng.ch/test', // test
+    test: 'https://data.autokueng.ch:9000', // test
     development: 'http://localhost:9000', // local development
     production: 'https://data.autokueng.ch', // production
 }
 
 let DataApi = Axios.create({
-    baseURL: urls[process.env.NODE_ENV],
+    baseURL: urls[process.env.NEXT_PUBLIC_BACKEND_URL],
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
