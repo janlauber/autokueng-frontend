@@ -2,6 +2,7 @@
 
 This is the frontend of the [https://autokueng.ch](https://autokueng.ch) website.
 
-## Installation
+## Docker
 
-### Env
+### Args
+`NEXT_PUBLIC_BACKEND_URL` - can be set durring building pipeline with **production**, **test** or **development**
