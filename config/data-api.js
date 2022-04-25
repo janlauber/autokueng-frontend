@@ -2,7 +2,7 @@ import Axios from 'axios';
 import Cookies from 'js-cookie';
 
 let urls = {
-    test: 'https://data.autokueng.ch:9000', // test
+    test: 'http://data.autokueng.ch:9000', // test
     development: 'http://localhost:9000', // local development
     production: 'https://data.autokueng.ch', // production
 }
