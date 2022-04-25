@@ -57,11 +57,9 @@ function News() {
         } catch (error) {
           console.log(error);
         }
-        // Timeout
-        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     )(loading)
-  }, [])
+  }, [loading])
 
 
   // POST API News Data
