@@ -1,6 +1,14 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+}
+
 module.exports = {
-    env: {
-      // Will be available on both server and client
-      NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL || 'development',
-    },
-  }
+  nextConfig,
+  assetPrefix: './',
+  images: {
+    domains: [
+      "api.autokueng.ch",
+    ],
+  },
+}

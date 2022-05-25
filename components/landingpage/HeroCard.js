@@ -23,7 +23,7 @@ function HeroCard({ data }) {
                     src="/images/background/background_old.jpg"
                     alt="Autoküng AG Foto"
                   />
-                  <div className="absolute inset-0 bg-blue-300 mix-blend-multiply" />
+                  <div className="absolute inset-0 bg-blue-500 mix-blend-multiply" />
                 </div>
                 <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
                   <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
