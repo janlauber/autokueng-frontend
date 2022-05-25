@@ -8,7 +8,7 @@ let urls = {
 }
 
 let DataApi = Axios.create({
-    baseURL: urls[process.env.NEXT_PUBLIC_BACKEND_URL],
+    baseURL: urls[process.env.NODE_ENV],
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
