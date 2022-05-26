@@ -97,7 +97,9 @@ export default function ContactForm() {
         <div className="">
             <div className="max-w-7xl mx-auto px-4  sm:px-6 lg:px-8">
                 <div className="relative shadow-xl">
-                    <Heading title="KONTAKT" subtitle="" />
+                    <div className='hidden sm:block'>
+                        <Heading title="KONTAKT" subtitle="" />
+                    </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3">
                         {/* Contact information */}
