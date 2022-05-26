@@ -32,7 +32,7 @@ const Stats = () => {
             </div>
             <div className="mt-10 pb-12 bg-white sm:pb-16">
                 <div className="relative">
-                <div className="absolute inset-0 h-1/2 bg-gray-100" />
+                <div className="absolute inset-0 h-1/2 bg-gray-50" />
                     <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="max-w-4xl mx-auto">
                         <dl className="rounded-lg bg-white shadow-lg sm:grid sm:grid-cols-3">

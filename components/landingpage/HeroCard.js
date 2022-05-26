@@ -57,7 +57,7 @@ function HeroCard({ data }) {
                             style={{
                               display: show ? "block" : "none"
                             }}
-                            className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-xs sm:px-0"
+                            className="absolute z-50 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-xs sm:px-0"
                           >
                             <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                               <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-6 sm:p-8">

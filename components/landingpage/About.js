@@ -2,7 +2,7 @@ import { PhoneIcon, MailIcon, LocationMarkerIcon } from '@heroicons/react/solid'
 const About = () => {
     return (
         <div className="bg-white">
-            <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
                     <h2 className="text-base font-semibold text-blue-600 tracking-wide uppercase">
                         Das Wichtigste

@@ -244,6 +244,30 @@ export default function ContactForm() {
                                     <a className="text-blue-200 hover:text-blue-100" href="https://github.com/janlauber"><span className="ml-3">Jan Lauber</span></a>
                                 </dd>
                             </dl>
+
+                            <h3 className="text-lg font-medium text-white mt-10">&Ouml;ffnungszeiten</h3>
+
+                            <dl className="mt-2 space-y-6">
+                                <dd className="flex text-base text-blue-50">
+                                    <div className="">
+                                        <p className="font-thin">
+                                            <span className="font-normal">Montag bis Freitag:</span>
+                                            <br />
+                                            07:30 - 12:00 / 13:00 - 18:00
+                                        </p>
+                                        <p className="font-thin">
+                                            <span className="font-normal">Samstag</span>
+                                            <br />
+                                            GESCHLOSSEN
+                                        </p>
+                                        <p className="font-thin">
+                                            <span className="font-normal">Sonntag</span>
+                                            <br />
+                                            GESCHLOSSEN
+                                        </p>
+                                    </div>
+                                </dd>
+                            </dl>
                         </div>
 
                         {/* Contact form */}

@@ -168,15 +168,11 @@ function News() {
       className={
         loadingError != '' ?
           "hidden" :
-          "py-3 pt-10 max-w-xl sm:mx-auto block"
+          "py-10 sm:mx-auto block"
       }>
-      <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
-        NEWS
-      </h1>
 
-      <div className="px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-14 sm:pb-10">
-        <div className="max-w-md mx-auto">
-
+      <div className="max-w-lg mx-auto grid gap-5">
+        <div className="flex w-10/12 m-auto flex-col rounded-lg shadow-lg overflow-hidden sm:hover:scale-105 hover:active:scale-105 transition-all ease-in-out duration-150 bg-white">
           {loading ?
             <div className=''>
               <Skeleton className='h-20 w-full' count={1} />
@@ -188,7 +184,23 @@ function News() {
                 display: showForm ? "none" : "block"
               }}
             >
-              <div>
+              <div className="flex-shrink-0">
+                <img className=" h-full w-full object-cover" src={image} alt="" />
+              </div>
+              <div className="flex-1 sm:bg-white  p-6 flex flex-col justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-blue-500">
+                    <p className="">
+                      NEWS
+                    </p>
+                  </p>
+                  <p className="block mt-2">
+                    <p className="text-xl font-semibold text-gray-900">{title}</p>
+                    <p className="mt-3 text-base text-gray-500">{content}</p>
+                  </p>
+                </div>
+              </div>
+              {/* <div>
                 <img src={image} className="" />
               </div>
               <div className="divide-y divide-gray-200">
@@ -198,13 +210,14 @@ function News() {
                   </h1>
                   <p className="whitespace-pre-line">{content}</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           }
 
           <div style={{
             display: showForm ? "block" : "none"
           }}
+            className="p-6"
           >
             <form onSubmit={handleSubmit} id="news-form">
               <div className="text-center mb-6">
@@ -291,7 +304,7 @@ function News() {
             </form>
           </div>
           <div
-            className="mb-6"
+            className="mb-6 mr-6"
             style={{
               display: showEdit & !showForm ? "block" : "none"
             }}
