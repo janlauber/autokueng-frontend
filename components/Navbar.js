@@ -68,7 +68,7 @@ function Navbar(props) {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white shadow absolute z-50 w-full">
+    <Disclosure as="nav" className="bg-white shadow fixed z-50 w-full">
 
       {({ open }) => (
         <>
