@@ -9,6 +9,10 @@ import Cookies from 'js-cookie'
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
 function News() {
   const authenticate = useAuth()
   const [showEdit, setShowEdit] = useState(false)
@@ -17,6 +21,7 @@ function News() {
   const [content, setContent] = useState()
   const [image, setImage] = useState()
   const [loading, setLoading] = useState(true)
+  const [loadingError, setLoadingError] = useState('')
 
   const token = Cookies.get('token');
   if (token) {
@@ -55,7 +60,9 @@ function News() {
           }
           setLoading(false)
         } catch (error) {
-          console.log(error);
+          console.log(error)
+          setLoading(false)
+          setLoadingError(error)
         }
       }
     )(loading)
@@ -159,9 +166,9 @@ function News() {
   return (
     <div
       className={
-        loading ?
-          "py-3 pt-10 sm:mx-40 lg:mx-64" :
-          "py-3 pt-10 max-w-xl sm:mx-auto"
+        loadingError != '' ?
+          "hidden" :
+          "py-3 pt-10 max-w-xl sm:mx-auto block"
       }>
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-5xl">
         NEWS

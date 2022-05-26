@@ -13,7 +13,7 @@ function HeroCard({ data }) {
   }
 
     return (
-        <div className="relative">
+        <div className="relative -mt-6">
           <div className="absolute inset-x-0 bottom-0 h-1/2" />
             <div className=" ">
               <div className="relative shadow-xl">
@@ -34,7 +34,7 @@ function HeroCard({ data }) {
                       <Popover className="relative">
                         <a
                           onClick={showOpenDoors}
-                          className="cursor-pointer flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-blue-500 bg-white hover:bg-blue-50 sm:px-8"
+                          className="cursor-pointer flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-blue-500 bg-white sm:hover:bg-blue-50 sm:px-8"
                         >
                           Öffnungszeiten
                           <ChevronDownIcon
@@ -83,7 +83,7 @@ function HeroCard({ data }) {
                       </Popover>
                       <a
                         href="/kontakt"
-                        className="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-500 bg-opacity-60 hover:bg-opacity-70 sm:px-8"
+                        className="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-500 bg-opacity-80 sm:hover:bg-opacity-90 sm:px-8"
                       >
                         Kontakt
                       </a>

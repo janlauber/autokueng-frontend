@@ -48,41 +48,13 @@ export default function Firma() {
     <div>
       <Heading title="FIRMA" subtitle="Unsere Firma im Überblick" />
       {loadingTeam ?
-        <div className="p-5 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 place-items-stretch h-80">
-          {/* <Skeleton className="justify-self-auto" height={200} width={200} count={6} inline="true"/> */}
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-        </div>
+        null
         :
         <Team members={members} />
       }
       <HeaderSection theme="Unsere Bilder" title="GALERIE" description="Eindrücke des Alltages" />
       {loadingGallery ?
-        <div className="p-5 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 place-items-stretch h-80">
-          {/* <Skeleton className="justify-self-auto" height={200} width={200} count={6} inline="true"/> */}
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-        </div>
+        null
         :
         <Gallery carouselItems={carouselItems} />
       }

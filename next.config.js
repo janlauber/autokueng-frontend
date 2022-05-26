@@ -1,14 +1,15 @@
-/** @type {import('next').NextConfig} */
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
+  // assetPrefix: './',
+  // images: {
+  //   domains: [
+  //     "api.autokueng.ch",
+  //     "data.autokueng.ch"
+  //   ],
+  // },
 }
 
-module.exports = {
-  nextConfig,
-  assetPrefix: './',
-  images: {
-    domains: [
-      "api.autokueng.ch",
-    ],
-  },
-}
+module.exports = nextConfig

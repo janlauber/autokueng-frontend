@@ -250,21 +250,7 @@ export default function Links() {
     <div>
       <Heading title="LINKS" subtitle="Nützliche Links" />
       {loading ?
-        <div className="p-5 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 place-items-stretch h-80">
-          {/* <Skeleton className="justify-self-auto" height={200} width={200} count={6} inline="true"/> */}
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-          <div>
-            <Skeleton height="100%" width="100%" />
-          </div>
-        </div>
+        null
         :
         <div>
           <div className=" grid place-items-center my-5">
