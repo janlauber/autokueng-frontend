@@ -177,7 +177,7 @@ export default function ServiceCard({ service }) {
     return (
         <div id={uniqueCardID} className='flex p-3 my-4 items-center justify-center'>
             <div
-                className="w-80 h-auto rounded-2xl border shadow-sm py-12 px-8 hover:-translate-y-1 hover:shadow-2xl delay-75 duration-100"
+                className="w-80 select-none h-auto rounded-2xl shadow-lg py-12 px-8 sm:hover:scale-105 sm:hover:shadow-2xl hover:active:scale-105 hover:active:shadow-2xl duration-150 ease-in-out"
 
             >
                 <div
