@@ -54,50 +54,21 @@ const services = [
 
 const Services = () => {
     return (
-        <div className="services">
-            <div className="bg-blue-500 py-8">
-                <h2 className="text-center text-3xl font-extrabold text-white">
-                    UNSERE SERVICES
-                </h2>
-                <div className="text-white flow-root mt-8 lg:mt-10">
-                    <div className="grid grid-rows-4 md:grid-rows-2 grid-flow-col gap-4 ">
-                        {services.map((services) => (
-                            <div className="text-lg text-center" key={services.id}>
-                                <div className="text my-5">
-                                    <FontAwesomeIcon icon={services.icon} className="fa-5x" />
-                                </div>
-                                <h3 className="font-bold" >{services.title}</h3>
-                                <p className="text-gray-300 italic text-sm">{services.description}</p>
+        <div className="bg-gray-100 pt-10">
+            <h2 className="text-3xl text-center font-extrabold text-gray-900 sm:text-4xl">
+                UNSERE SERVICES
+            </h2>
+            <div className="text-blue-500 flow-root mt-8 lg:mt-10">
+                <div className="p-4 grid grid-cols-1 sm:grid-cols-4 gap-6">
+                    {services.map((services) => (
+                        <div className="block cursor-default select-none sm:hover:scale-105 hover:active:scale-105 transition-all duration-150 ease-in-out py-4 px-10 bg-white rounded-lg shadow-lg text-lg text-center" key={services.id}>
+                            <div className="text">
+                                <FontAwesomeIcon icon={services.icon} className="fa-3x mb-2" />
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="bg-white py-16 lg:py-24">
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="relative py-24 px-8 bg-blue-500 rounded-xl shadow-2xl overflow-hidden lg:px-16 lg:grid lg:grid-cols-2 lg:gap-x-8">
-                        <div className="absolute inset-0 opacity-50 filter saturate-0 mix-blend-multiply">
-                            <img
-                            src="/images/background/background2.jpg"
-                            alt=""
-                            className="w-full h-full object-cover"
-                            />
+                            <h3 className="font-bold text-gray-700" >{services.title}</h3>
+                            <p className="text-gray-700 text-sm">{services.description}</p>
                         </div>
-                        <div className="relative lg:col-span-1">
-                            <img className="h-12 w-auto" src="/images/logo/logo_white.svg" alt="" />
-                            <blockquote className="mt-6 text-white">
-                            <p className="text-xl font-medium sm:text-2xl">
-                            Wir bieten Ihnen jeglichen Service für Ihr Auto, damit Sie unbeschwert durch den Tag fahren.
-                            </p>
-                            <footer className="mt-6">
-                                <p className="flex flex-col font-medium">
-                                <span>Auto Küng AG</span>
-                                <span className="italic font-light">Thunstrasse 16, 3112 Allmendingen</span>
-                                </p>
-                            </footer>
-                            </blockquote>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import 'tailwindcss/tailwind.css'
+import '../styles/globals.css';
 import Layout from '../components/Layout'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import { AuthProvider } from '../contexts/auth'

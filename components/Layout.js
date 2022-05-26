@@ -10,7 +10,7 @@ export default function Layout(props) {
         
         <div className="flex flex-col h-screen">
             <Navbar/>
-            <main className="flex-1">
+            <main className="flex-1 mt-20">
                 {React.cloneElement(props.children, { name })}
             </main>
             <Footer />

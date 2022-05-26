@@ -43,8 +43,8 @@ function Navbar(props) {
     )
     responsiveShowUser = (
       <div className="pt-4 flex items-center px-4">
-          <div className="flex-shrink-0">
-            <img
+        <div className="flex-shrink-0">
+          <img
             className="h-10 w-10 rounded-full ring-blue-500 ring-2"
             src="/images/avatars/admin.png"
             alt=""
@@ -68,7 +68,7 @@ function Navbar(props) {
   }
 
   return (
-    <Disclosure as="nav" className="bg-white shadow">
+    <Disclosure as="nav" className="bg-white shadow absolute z-50 w-full">
 
       {({ open }) => (
         <>
@@ -76,50 +76,80 @@ function Navbar(props) {
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
-                    <Link href="/">
-                      <img
-                        className="block lg:hidden h-8 w-auto cursor-pointer"
-                        src="/images/logo/logo_text_colored_primary.svg"
-                        alt="Workflow"
-                      />
-                    </Link>
-                    <Link href="/">
-                      <img
-                        className="hidden lg:block h-8 w-auto cursor-pointer"
-                        src="/images/logo/logo_text_colored_primary.svg"
-                        alt="Workflow"
-                      />
-                    </Link>
+                  <Link href="/">
+                    <img
+                      className="block lg:hidden h-8 w-auto cursor-pointer"
+                      src="/images/logo/logo_text_colored_primary.svg"
+                      alt="Workflow"
+                    />
+                  </Link>
+                  <Link href="/">
+                    <img
+                      className="hidden lg:block h-8 w-auto cursor-pointer"
+                      src="/images/logo/logo_text_colored_primary.svg"
+                      alt="Workflow"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-blue-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link href="/">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Home
                     </span>
                   </Link>
                   <Link href="/fahrzeugpark">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/fahrzeugpark' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Fahrzeugpark
                     </span>
                   </Link>
                   <Link href="/services">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/services' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Services
                     </span>
                   </Link>
                   <Link href="/firma">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/firma' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Firma
                     </span>
                   </Link>
                   <Link href="/links">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/links' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Links
                     </span>
                   </Link>
                   <Link href="/kontakt">
-                    <span className="cursor-pointer border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                    <span
+                      className={classNames(
+                        router.pathname === '/kontakt' ? 'border-blue-500 text-blue-500' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                        "cursor-pointer border-transparent inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                      )}
+                    >
                       Kontakt
                     </span>
                   </Link>
@@ -141,7 +171,7 @@ function Navbar(props) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="cursor-pointer origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      
+
                       <Menu.Item>
                         {({ active }) => (
                           <a
@@ -157,10 +187,10 @@ function Navbar(props) {
                 </Menu>
               </div>
 
-              
+
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 sm:hover:text-gray-500 sm:hover:bg-gray-100 focus:outline-none focus:ring-0">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -173,50 +203,81 @@ function Navbar(props) {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
+
+
             <div className="pt-2 pb-3 space-y-1">
-              {/* Current: "bg-blue-50 border-blue-500 text-blue-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <Disclosure.Button
-                as="a"
-                href="/"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              <Transition
+                show={open}
+                enter="transition-opacity duration-75"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-opacity duration-150"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
               >
-                Home
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="/fahrzeugpark"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Fahrzeugpark
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="/services"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Services
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="/firma"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Firma
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="/links"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Links
-              </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href="/kontakt"
-                className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                Kontakt
-              </Disclosure.Button>
+                {/* Current: "bg-blue-50 border-blue-500 text-blue-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
+                <Disclosure.Button
+                  as="a"
+                  href="/"
+                  className={classNames(
+                    router.pathname === '/' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Home
+                </Disclosure.Button>
+                <Disclosure.Button
+                  as="a"
+                  href="/fahrzeugpark"
+                  className={classNames(
+                    router.pathname === '/fahrzeugpark' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Fahrzeugpark
+                </Disclosure.Button>
+                <Disclosure.Button
+                  as="a"
+                  href="/services"
+                  className={classNames(
+                    router.pathname === '/services' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Services
+                </Disclosure.Button>
+                <Disclosure.Button
+                  as="a"
+                  href="/firma"
+                  className={classNames(
+                    router.pathname === '/firma' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Firma
+                </Disclosure.Button>
+                <Disclosure.Button
+                  as="a"
+                  href="/links"
+                  className={classNames(
+                    router.pathname === '/links' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Links
+                </Disclosure.Button>
+                <Disclosure.Button
+                  as="a"
+                  href="/kontakt"
+                  className={classNames(
+                    router.pathname === '/kontakt' ? 'bg-gray-100 text-blue-500' : 'text-gray-500',
+                    "border-transparent hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+                  )}
+                >
+                  Kontakt
+                </Disclosure.Button>
+
+              </Transition>
             </div>
 
             <div className="pt-0 pb-3 border-t border-gray-200">
@@ -238,8 +299,9 @@ function Navbar(props) {
 
           </Disclosure.Panel>
         </>
-      )}
-    </Disclosure>
+      )
+      }
+    </Disclosure >
   )
 }
 
