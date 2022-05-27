@@ -172,7 +172,7 @@ function News() {
       }>
 
       <div className="max-w-lg mx-auto grid gap-5">
-        <div className="flex w-10/12 m-auto flex-col rounded-lg shadow-lg overflow-hidden sm:hover:scale-105 hover:active:scale-105 transition-all ease-in-out duration-150 bg-white">
+        <div className="flex w-10/12 m-auto flex-col rounded-lg shadow-lg overflow-hidden bg-white">
           {loading ?
             <div className=''>
               <Skeleton className='h-20 w-full' count={1} />
