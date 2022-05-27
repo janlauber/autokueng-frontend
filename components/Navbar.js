@@ -14,6 +14,7 @@ function classNames(...classes) {
 function Navbar(props) {
   const authenticate = useAuth()
   const router = useRouter()
+
   let loginStatus
   let responsiveShowUser
   let showUser = (
@@ -157,7 +158,11 @@ function Navbar(props) {
               </div>
 
 
-              <div className="hidden z-10 sm:ml-6 sm:my-auto sm:block">
+              <div className={classNames(
+                authenticate.user === null ? 'hidden' : 'sm:block',
+                "hidden z-10 sm:ml-6 sm:my-auto"
+              )}
+              >
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 relative">
                   {showUser}
@@ -280,7 +285,12 @@ function Navbar(props) {
               </Transition>
             </div>
 
-            <div className="pt-0 pb-3 border-t border-gray-200">
+            <div
+              className={classNames(
+                authenticate.user === null ? 'hidden' : 'block',
+                "pt-0 pb-3 border-t border-gray-200"
+              )}
+            >
               {responsiveShowUser}
               <div className="mt-3 space-y-1">
                 <span

@@ -45,7 +45,7 @@ const navigation = [
               </a>
             ))}
           </div>
-          <div className="mt-8 md:mt-0 md:order-1">
+          <div className="mt-8 sm:mt-4 md:order-1">
             <p className="text-center text-base text-gray-400">&copy; 2022 AutoKüng AG. All rights reserved.</p>
           </div>
         </div>
