@@ -171,7 +171,7 @@ function News() {
           "py-10 sm:mx-auto block"
       }>
 
-      <div className="max-w-lg mx-auto grid gap-5">
+      <div className="max-w-3xl mx-auto grid gap-5">
         <div className="flex w-10/12 m-auto flex-col rounded-lg shadow-lg overflow-hidden bg-white">
           {loading ?
             <div className=''>
@@ -196,7 +196,7 @@ function News() {
                   </p>
                   <p className="block mt-2">
                     <p className="text-xl font-semibold text-gray-900">{title}</p>
-                    <p className="mt-3 text-base text-gray-500">{content}</p>
+                    <p className="mt-3 text-base text-gray-500 whitespace-pre-line">{content}</p>
                   </p>
                 </div>
               </div>
