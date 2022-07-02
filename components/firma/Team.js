@@ -15,7 +15,8 @@ export default function Team({ members }) {
 
     console.log()
 
-    const error = 0;
+    let error = 0;
+    let errorText = 'Member konnte nicht hochgeladen werden';
 
     const formDataText = new FormData()
     const formDataImage = new FormData()
@@ -46,13 +47,28 @@ export default function Team({ members }) {
           // clear form
           toggle();
         } catch (err) {
+          try {
+            errorText = err.response.data.message
+          } catch (err) {
+            errorText = err
+          }
           error = 1
           console.log(err)
         }
       } else {
+        try {
+          errorText = err.response.data.message
+        } catch (err) {
+          errorText = err
+        }
         error = 1
       }
     } catch (err) {
+      try {
+        errorText = err.response.data.message
+      } catch (err) {
+        errorText = err
+      }
       error = 1
       console.log(err)
     }
@@ -70,7 +86,7 @@ export default function Team({ members }) {
     } else if (error === 1) {
       Swal.fire({
         title: 'Fehler beim Speichern',
-        text: 'Member konnte nicht hochgeladen werden',
+        text: errorText,
         icon: 'error',
         showConfirmButton: false,
         toast: true,
