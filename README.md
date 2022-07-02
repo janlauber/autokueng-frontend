@@ -2,6 +2,10 @@
 
 This is the frontend of the [https://autokueng.ch](https://autokueng.ch) website.
 
+## Backend
+- [REST API](https://github.com/janlauber/autokueng-api)
+- [Data API](https://github.com/janlauber/autokueng-data)
+
 ## Docker
 
 ### Args

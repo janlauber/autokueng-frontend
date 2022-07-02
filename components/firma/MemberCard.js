@@ -62,7 +62,8 @@ export default function MemberCard({ member }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const error = 0
+        let error = 0
+        let errorText = 'Member konnte nicht hochgeladen werden'
 
         if (document.getElementById(uniqueImageID).files[0]) {
             try {
@@ -90,6 +91,11 @@ export default function MemberCard({ member }) {
                         // clear form
                         document.querySelector(uniqueImageID).value = ''
                     } catch (err) {
+                        try {
+                            errorText = err.response.data.message
+                        } catch (err) {
+                            errorText = err
+                        }
                         console.log(err)
                     }
                 } else {
@@ -97,6 +103,11 @@ export default function MemberCard({ member }) {
                 }
             } catch (err) {
                 console.log(err)
+                try {
+                    errorText = err.response.data.message
+                } catch (err) {
+                    errorText = err
+                }
                 error = 1
             }
         }
@@ -119,6 +130,7 @@ export default function MemberCard({ member }) {
             }
 
         } catch (err) {
+            errorText = err.response.data.message
             error = 2
         }
 
@@ -135,7 +147,7 @@ export default function MemberCard({ member }) {
         } else if (error === 1) {
             Swal.fire({
                 title: 'Fehler beim Hochladen',
-                text: 'Bild konnte nicht hochgeladen werden',
+                text: errorText,
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
@@ -146,7 +158,7 @@ export default function MemberCard({ member }) {
         } else if (error === 2) {
             Swal.fire({
                 title: 'Fehler beim Speichern',
-                text: 'Text konnte nicht gespeichert werden',
+                text: errorText,
                 icon: 'error',
                 showConfirmButton: false,
                 toast: true,
